@@ -1,5 +1,6 @@
 import requests as requests
 from bs4 import BeautifulSoup as soup
+import validators
 import os
 from flask import Flask, request
 import re
@@ -84,7 +85,11 @@ def main():
                     a=a+(re.sub(r"[^a-zA-Z0-9]+", ' ', k))
                 update_id=update_id+1
                 surl3= 'https://gogoanime.so/' + str('-'.join(a.split()))
-                sender(surl3,update)
+                if(validators.url(surl3)==true):
+                    sender(surl3,update)
+                else:
+                    send_message(get_chat_id(update),"wrongly written or Not available check again")
+                    
             else:
                  surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(get_message_text(update).lower().split()))
                  r = requests.get(surl2 , headers={'User-Agent': 'Mozilla/5.0'})
