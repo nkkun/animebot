@@ -48,12 +48,15 @@ def sender(url,update):
         req = s.get(url , headers={'User-Agent': 'Mozilla/5.0'})
         page_soup = soup(req.content, "html.parser")
         title = page_soup.find_all('div', class_='cf-download')
-        title=title[0].find_all('a')
+        if(len(title)>0):
+            title=title[0].find_all('a')
     
-        for i in range(len(title)):
-            title[i]=title[i].attrs['href']
-            send_message(get_chat_id(update),str(i+1))
-            send_message(get_chat_id(update),str(title[i]))
+            for i in range(len(title)):
+                title[i]=title[i].attrs['href']
+                send_message(get_chat_id(update),str(i+1))
+                send_message(get_chat_id(update),str(title[i]))
+        else:
+            send_message(get_chat_id(update),"wrongly written or Not available check again")
 
 def send_message(chat_id,message_text):
     params = {"chat_id":chat_id,"text":message_text}
