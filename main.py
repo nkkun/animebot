@@ -85,7 +85,7 @@ def main():
                     a=a+(re.sub(r"[^a-zA-Z0-9]+", ' ', k))
                 update_id=update_id+1
                 surl3= 'https://gogoanime.so/' + str('-'.join(a.split()))
-                if(validators.url(surl3)==true):
+                if(validators.url(surl3)==True):
                     sender(surl3,update)
                 else:
                     send_message(get_chat_id(update),"wrongly written or Not available check again")
