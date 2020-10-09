@@ -77,6 +77,20 @@ def main():
                 send_message(get_chat_id(update),"enter search keyword and wait until it finishes the search with downloading instructions:")
                 update_id = last_update(url,update_id)["update_id"]
                 update_id=update_id+1
+            elif (get_message_text(update).lower()=="/updates"):
+                surl4= 'https://gogoanime.so'
+                r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
+                souper=soup(r.content, "html.parser")
+                tit = souper.find_all('p', class_='name')
+                for i in range(len(tit)):
+                    tit[i]=tit[i].find('a')
+                for l in range(len(tit)):
+                    tit[l]=tit[l].attrs['href'][1:]
+                    send_message(get_chat_id(update),str(tit[l]))
+                send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1"')
+                send_message(get_chat_id(update),'for example "/link one piece episode 1"')
+                update_id = last_update(url,update_id)["update_id"]
+                update_id=update_id+1
                 
             elif (get_message_text(update).lower()=="/start"):
                 send_message(get_chat_id(update),"say hi")
