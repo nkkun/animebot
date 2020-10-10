@@ -36,7 +36,6 @@ def about(txt):
     a=""
     for k in txt.split("/n"):
         a=a+(re.sub(r"[^a-zA-Z0-9]+", ' ', k))
-        update_id=update_id+1
         surl5= 'https://gogoanime.so/category/' + str('-'.join(a.split()))
         if(validators.url(surl5)==True):
             r = requests.get(surl5, headers={'User-Agent': 'Mozilla/5.0'})
