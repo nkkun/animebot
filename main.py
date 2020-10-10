@@ -41,18 +41,18 @@ def about(txt,update):
             r = requests.get(surl5, headers={'User-Agent': 'Mozilla/5.0'})
             so = soup(r.content, 'html.parser')
             abo = so.find_all('p', class_='type')
-            abo[0]=str(abo[0].find('span').getText()) + str(abo[0].find('a').attrs['title'])
-            abo[1]= str(abo[1].find('span').getText()) + str(abo[1].getText())
-            x=abo[2].find_all('a')
-            s=""
-            for i in range(len(x)):
-                s+=x[i].getText()
-            abo[2]= str(abo[2].find('span').getText()) + s
-            abo[3]= str(abo[3].find('span').getText()) + str(abo[3].getText())
-            abo[4]= str(abo[4].find('span').getText()) + str(abo[4].getText())
-            abo[5]= str(abo[5].find('span').getText()) + str(abo[5].getText())
-            abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
             if(len(abo)>0):
+                abo[0]=str(abo[0].find('span').getText()) + str(abo[0].find('a').attrs['title'])
+                abo[1]= str(abo[1].find('span').getText()) + str(abo[1].getText())
+                x=abo[2].find_all('a')
+                s=""
+                for i in range(len(x)):
+                    s+=x[i].getText()
+                abo[2]= str(abo[2].find('span').getText()) + s
+                abo[3]= str(abo[3].getText())
+                abo[4]= str(abo[4].getText())
+                abo[5]= str(abo[5].getText())
+                abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
                 for i in range(len(abo)):
                     send_message(get_chat_id(update),str(abo[i]))
             else:
