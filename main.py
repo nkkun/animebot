@@ -32,6 +32,36 @@ def last_update(req,offset=None):
     total_updates=len(result)-1
     return result[total_updates]
 
+def about(txt):
+    a=""
+    for k in txt.split("/n"):
+        a=a+(re.sub(r"[^a-zA-Z0-9]+", ' ', k))
+        update_id=update_id+1
+        surl5= 'https://gogoanime.so/category/' + str('-'.join(a.split()))
+        if(validators.url(surl5)==True):
+            r = requests.get(surl5, headers={'User-Agent': 'Mozilla/5.0'})
+            so = soup(r.content, 'html.parser')
+            abo = so.find_all('p', class_='type')
+            abo[0]=str(abo[0].find('span').getText()) + str(abo[0].find('a').attrs['title'])
+            abo[1]= str(abo[1].find('span').getText()) + str(abo[1].getText())
+            x=abo[2].find_all('a')
+            s=""
+            for i in range(len(x)):
+                s+=x[i].getText()
+            abo[2]= str(abo[2].find('span').getText()) + s
+            abo[3]= str(abo[3].find('span').getText()) + str(abo[3].getText())
+            abo[4]= str(abo[4].find('span').getText()) + str(abo[4].getText())
+            abo[5]= str(abo[5].find('span').getText()) + str(abo[5].getText())
+            abo.append("Episode: "+ str(so.find('a', class_='active').getText()))
+            if(len(abo)>0):
+                for i in range(len(abo)):
+                    send_message(get_chat_id(update),str(abo[i]))
+            else:
+                send_message(get_chat_id(update),'Oni Chan! it appears that you have typed the name wrong or the link is broken :(')
+        else:
+             send_message(get_chat_id(update),'Oni Chan! it appears that you have typed the name wrong or the link is broken :(')
+
+
 def sender(url,update):
     login={'_csrf': 0,
     'email': 'ransomsumit@aol.com',
@@ -56,7 +86,10 @@ def sender(url,update):
                 send_message(get_chat_id(update),str(i+1))
                 send_message(get_chat_id(update),str(title[i]))
         else:
-            send_message(get_chat_id(update),"wrongly written or Not available check again")
+            send_message(get_chat_id(update),"wrongly written or Not available, Possible solutions")
+            send_message(get_chat_id(update),"Search for the anime name and paste it as it is written")
+            send_message(get_chat_id(update),"remember 'episode' should be written completely, no short cuts like 'ep'")
+            send_message(get_chat_id(update),"episode number doesn't exist check by writing /about")
 
 def send_message(chat_id,message_text):
     params = {"chat_id":chat_id,"text":message_text}
@@ -73,6 +106,8 @@ def main():
                 send_message(get_chat_id(update),"Hello, " + get_name(update) + " type /search to start searching")
                 update_id = last_update(url,update_id)["update_id"]
                 update_id=update_id+1
+
+                
             elif (get_message_text(update).lower()[:7]=="/search"):
                 if(get_message_text(update).lower()=='/search'):
                     send_message(get_chat_id(update),"enter search keyword and wait until it finishes the search with downloading instructions:")
@@ -88,10 +123,20 @@ def main():
                         link = tit.attrs['title']
                         send_message(get_chat_id(update),str(link))
                     send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
-    
                 update_id = last_update(url,update_id)["update_id"]
                 update_id = update_id+1
-
+                
+            elif (get_message_text(update).lower()[:6]=="/about"):
+                if(get_message_text(update).lower()=='/about'):
+                    send_message(get_chat_id(update),"/about <enter name as it was found in the search>")
+                    update_id = last_update(url,update_id)["update_id"]
+                    update_id = update_id+1
+                else:
+                    about(get_message_text(update).lower()[6:])
+                    update_id = last_update(url,update_id)["update_id"]
+                    update_id = update_id+1
+                    
+                    
             elif (get_message_text(update).lower()=="/help"):
                 send_message(get_chat_id(update),'/link < add anime name from search with episode "number" >')
                 send_message(get_chat_id(update),'for example "/link one piece episode 1"')
@@ -115,10 +160,13 @@ def main():
                 send_message(get_chat_id(update),'for example "/link one piece episode 1"')
                 update_id = last_update(url,update_id)["update_id"]
                 update_id=update_id+1
+
                 
             elif (get_message_text(update).lower()=="/start"):
                 send_message(get_chat_id(update),"say hi")
                 update_id=update_id+1
+
+            
             elif (get_message_text(update).lower()[0:5]=="/link"):
                 s=get_message_text(update).lower()[6:]
                 a=""
