@@ -32,7 +32,7 @@ def last_update(req,offset=None):
     total_updates=len(result)-1
     return result[total_updates]
 
-def about(txt):
+def about(txt,update):
     a=""
     for k in txt.split("/n"):
         a=a+(re.sub(r"[^a-zA-Z0-9]+", ' ', k))
