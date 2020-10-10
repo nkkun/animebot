@@ -131,7 +131,7 @@ def main():
                     update_id = last_update(url,update_id)["update_id"]
                     update_id = update_id+1
                 else:
-                    about(get_message_text(update).lower()[6:])
+                    about(get_message_text(update).lower()[6:],update)
                     update_id = last_update(url,update_id)["update_id"]
                     update_id = update_id+1
                     
