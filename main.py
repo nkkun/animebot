@@ -73,10 +73,26 @@ def main():
                 send_message(get_chat_id(update),"Hello, " + get_name(update) + " type /search to start searching")
                 update_id = last_update(url,update_id)["update_id"]
                 update_id=update_id+1
-            elif (get_message_text(update).lower()=="/search"):
-                send_message(get_chat_id(update),"enter search keyword and wait until it finishes the search with downloading instructions:")
+            elif (get_message_text(update).lower()[:7]=="/search"):
+                if(get_message_text(update).lower()=='/search'):
+                    send_message(get_chat_id(update),"enter search keyword and wait until it finishes the search with downloading instructions:")
+                else:
+                    surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(get_message_text(update)[7:].lower().split()))
+                    r = requests.get(surl2 , headers={'User-Agent': 'Mozilla/5.0'})
+                    page_soup = soup(r.content, "html.parser")
+                    title = page_soup.find_all('p', class_='name')
+                    for i in range(len(title)):
+                        title[i]=title[i].find('a')
+                 
+                    for tit in title:
+                        link = tit.attrs['title']
+                        send_message(get_chat_id(update),str(link))
+                send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
+    
                 update_id = last_update(url,update_id)["update_id"]
-                update_id=update_id+1
+                update_id = update_id+1
+
+                
             elif (get_message_text(update).lower()=="/updates"):
                 surl4= 'https://gogoanime.so'
                 r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
