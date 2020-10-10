@@ -51,7 +51,7 @@ def about(txt,update):
             abo[3]= str(abo[3].find('span').getText()) + str(abo[3].getText())
             abo[4]= str(abo[4].find('span').getText()) + str(abo[4].getText())
             abo[5]= str(abo[5].find('span').getText()) + str(abo[5].getText())
-            abo.append("Episode: "+ str(so.find('a', class_='active').getText()))
+            abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
             if(len(abo)>0):
                 for i in range(len(abo)):
                     send_message(get_chat_id(update),str(abo[i]))
@@ -141,6 +141,7 @@ def main():
                 send_message(get_chat_id(update),'for example "/link one piece episode 1"')
                 send_message(get_chat_id(update),'/search < small anime tag such as "shippuden" >')
                 send_message(get_chat_id(update),'/updates "get you the latest anime releases"')
+                send_message(get_chat_id(update),"/about <enter name as it was found in the search>")
                 update_id = last_update(url,update_id)["update_id"]
                 update_id=update_id+1
                 
