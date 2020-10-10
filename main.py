@@ -87,7 +87,7 @@ def main():
                     for tit in title:
                         link = tit.attrs['title']
                         send_message(get_chat_id(update),str(link))
-                send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
+                        send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
     
                 update_id = last_update(url,update_id)["update_id"]
                 update_id = update_id+1
