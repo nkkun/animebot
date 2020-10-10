@@ -92,7 +92,15 @@ def main():
                 update_id = last_update(url,update_id)["update_id"]
                 update_id = update_id+1
 
+            elif (get_message_text(update).lower()=="/help"):
+                send_message(get_chat_id(update),'/link < add anime name from search with episode "number" >')
+                send_message(get_chat_id(update),'for example "/link one piece episode 1"')
+                send_message(get_chat_id(update),'/search < small anime tag such as "shippuden" >')
+                send_message(get_chat_id(update),'/updates "get you the latest anime releases"')
+                update_id = last_update(url,update_id)["update_id"]
+                update_id=update_id+1
                 
+
             elif (get_message_text(update).lower()=="/updates"):
                 surl4= 'https://gogoanime.so'
                 r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
