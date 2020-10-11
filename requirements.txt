@@ -38,7 +38,6 @@ six==1.15.0
 soupsieve==2.0.1
 telepot==12.7
 tornado==6.0.4
-traitlets==5.0.4
 urllib3==1.25.10
 validators==0.18.1
 wcwidth==0.2.5
