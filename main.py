@@ -4,8 +4,10 @@ import validators
 import os
 from flask import Flask, request
 import re
+import telepot
 
 Token= "1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk"
+bot = telepot.bot(Token)
 url="https://api.telegram.org/bot1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk/"
 server = Flask(__name__)
 def get_chat_id(update):
@@ -52,6 +54,10 @@ def about(txt,update):
                 abo[3]= str(abo[3].getText())
                 abo[4]= str(abo[4].getText())
                 abo[5]= str(abo[5].getText())
+                img=so.find('div', class_='anime_info_body')
+                img=img.find('img')
+                img=img.attrs['src']
+                bot.send_photo(get_chat_id(update), img)
                 abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
                 for i in range(len(abo)):
                     send_message(get_chat_id(update),str(abo[i]))
