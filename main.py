@@ -190,16 +190,16 @@ def main():
                         sender(surl3,update)
                     else:
                         send_message(get_chat_id(update),"wrongly written or Not available check again")
+                else:
+                    update_id = last_update(url,update_id)["update_id"]
+                    update_id = update_id+1
                     
                 '''elif(get_message_text(update).lower()[0:6]=="/batch"):
                      if(get_message_text(update).lower()=='/batch'):
                         send_message(get_chat_id(update),"/batch <episode range like '10-20'> <enter name as it was found in the search>")
                         update_id = last_update(url,update_id)["update_id"]
-                        update_id = update_id+1
-                    else:
-                        batch(get_message_text(update).lower()[7:],update)
-                        update_id = last_update(url,update_id)["update_id"]
                         update_id = update_id+1'''
+                
         else:
             update_id = last_update(url,update_id)["update_id"]
             update_id=update_id+1
