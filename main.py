@@ -94,8 +94,10 @@ def sender(url,update):
                 title[i]=title[i].attrs['href']
                 send_message(get_chat_id(update),str(title[i]))
         else:
-            send_message(get_chat_id(update),"wrongly written or Not available, Possible solutions \n \n" + "Search for the anime name and paste it as it is written \n \n")
-            send_message(get_chat_id(update),"remember 'episode' should be written completely, no short cuts like 'ep' \n \n" + "episode number doesn't exist check by writing /about")
+            send_message(get_chat_id(update),("wrongly written or Not available, Possible solutions \n \n" +
+                                              "Search for the anime name and paste it as it is written \n \n" +
+                                              "remember 'episode' should be written completely, no short cuts like 'ep' \n \n" +
+                                              "episode number doesn't exist check by writing /about"))
             
 
 def send_message(chat_id,message_text):
@@ -110,7 +112,7 @@ def main():
         update = last_update(url)
         if(get_message_text(update)):
             if (update_id == update["update_id"]):
-                if (get_message_text(update).lower()=="hi" or get_message_text(update).lower()=="hello" or get_message_text(update).lower()=="henlo"):
+                if (get_message_text(update).lower()=="hi" or get_message_text(update).lower()=="hello" or get_message_text(update).lower()=="hii"):
                     send_message(get_chat_id(update),"Hello, " + get_name(update) + " type /search to start searching")
                     update_id = last_update(url,update_id)["update_id"]
                     update_id=update_id+1
@@ -147,11 +149,9 @@ def main():
                     
                     
                 elif (get_message_text(update).lower()=="/help"):
-                    send_message(get_chat_id(update),'/link < add anime name from search with episode "number" >')
-                    send_message(get_chat_id(update),'for example "/link one piece episode 1"')
-                    send_message(get_chat_id(update),'/search < small anime tag such as "shippuden" >')
-                    send_message(get_chat_id(update),'/updates "get you the latest anime releases"')
-                    send_message(get_chat_id(update),"/about <enter name as it was found in the search>")
+                    send_message(get_chat_id(update),('/link < add anime name from search with episode "number" > \n' +
+                                                      'for example "/link one piece episode 1" \n \n' + '/search < small anime tag such as "shippuden" > \n \n' +
+                                                      '/updates "get you the latest anime releases" \n \n' + "/about <enter name as it was found in the search>"))
                     update_id = last_update(url,update_id)["update_id"]
                     update_id=update_id+1
                 
@@ -168,14 +168,14 @@ def main():
                         tit[l]=tit[l].attrs['href'][1:]
                         s=s+str(tit[l]) + "\n \n"
                     send_message(get_chat_id(update),s)
-                    send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1"')
-                    send_message(get_chat_id(update),'for example "/link one piece episode 1"')
+                    send_message(get_chat_id(update),('copy the name of the anime you want, write "/link" + paste the name + add the episode no. as "episode 1" \n \n' +
+                                                      'for example "/link one piece episode 1"'))
                     update_id = last_update(url,update_id)["update_id"]
                     update_id=update_id+1
 
                 
                 elif (get_message_text(update).lower()=="/start"):
-                    send_message(get_chat_id(update),"say hi")
+                    send_message(get_chat_id(update),"Say hi")
                     update_id=update_id+1
 
             
