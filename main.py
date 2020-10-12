@@ -46,12 +46,13 @@ def about(txt,update):
             abo = so.find_all('p', class_='type')
             if(len(abo)>0):
                 abo[0]=str(abo[0].find('span').getText()) + str(abo[0].find('a').attrs['title'])
-                abo[1]= str(abo[1].find('span').getText()) + str(abo[1].getText())
+                abo[1]= str(abo[1].getText())
                 x=abo[2].find_all('a')
                 s=""
                 for i in range(len(x)):
                     s+=x[i].getText()
                 abo[2]= str(abo[2].find('span').getText()) + s
+                s=""
                 abo[3]= str(abo[3].getText())
                 abo[4]= str(abo[4].getText())
                 abo[5]= str(abo[5].getText())
@@ -61,7 +62,8 @@ def about(txt,update):
                 bot.sendPhoto(get_chat_id(update), img)
                 abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
                 for i in range(len(abo)):
-                    send_message(get_chat_id(update),str(abo[i]))
+                    s=s+abo[i]+'\n' + '\n'
+                send_message(get_chat_id(update),str(abo[i]))
             else:
                 send_message(get_chat_id(update),'Oni Chan! it appears that you have typed the name wrong or the link is broken :(')
         else:
@@ -89,13 +91,11 @@ def sender(url,update):
     
             for i in range(len(title)):
                 title[i]=title[i].attrs['href']
-                send_message(get_chat_id(update),str(i+1))
                 send_message(get_chat_id(update),str(title[i]))
         else:
-            send_message(get_chat_id(update),"wrongly written or Not available, Possible solutions")
-            send_message(get_chat_id(update),"Search for the anime name and paste it as it is written")
-            send_message(get_chat_id(update),"remember 'episode' should be written completely, no short cuts like 'ep'")
-            send_message(get_chat_id(update),"episode number doesn't exist check by writing /about")
+            send_message(get_chat_id(update),"wrongly written or Not available, Possible solutions \n \n" + "Search for the anime name and paste it as it is written \n \n")
+            send_message(get_chat_id(update),"remember 'episode' should be written completely, no short cuts like 'ep' \n \n" + "episode number doesn't exist check by writing /about")
+            
 
 def send_message(chat_id,message_text):
     params = {"chat_id":chat_id,"text":message_text}
@@ -117,7 +117,7 @@ def main():
                 
                 elif (get_message_text(update).lower()[:7]=="/search"):
                     if(get_message_text(update).lower()=='/search'):
-                        send_message(get_chat_id(update),"enter search keyword and wait until it finishes the search with downloading instructions:")
+                        send_message(get_chat_id(update),"/search <enter short name of the anime>")
                     else:
                         surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(get_message_text(update)[7:].lower().split()))
                         r = requests.get(surl2 , headers={'User-Agent': 'Mozilla/5.0'})
@@ -161,9 +161,11 @@ def main():
                     tit = souper.find_all('p', class_='name')
                     for i in range(len(tit)):
                         tit[i]=tit[i].find('a')
+                    s=""
                     for l in range(len(tit)):
                         tit[l]=tit[l].attrs['href'][1:]
-                        send_message(get_chat_id(update),str(tit[l]))
+                        s=s+str(tit[l]) + "\n \n"
+                    send_message(get_chat_id(update),s)
                     send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1"')
                     send_message(get_chat_id(update),'for example "/link one piece episode 1"')
                     update_id = last_update(url,update_id)["update_id"]
@@ -187,20 +189,10 @@ def main():
                     else:
                         send_message(get_chat_id(update),"wrongly written or Not available check again")
                     
-                else:
-                     surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(get_message_text(update).lower().split()))
-                     r = requests.get(surl2 , headers={'User-Agent': 'Mozilla/5.0'})
-                     page_soup = soup(r.content, "html.parser")
-                     title = page_soup.find_all('p', class_='name')
-                     for i in range(len(title)):
-                         title[i]=title[i].find('a')
-                 
-                     for tit in title:
-                         link = tit.attrs['title']
-                         send_message(get_chat_id(update),str(link))
+                '''else:
                      send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
                      update_id = last_update(url,update_id)["update_id"]
-                     update_id=update_id+1
+                     update_id=update_id+1'''
         else:
             update_id = last_update(url,update_id)["update_id"]
             update_id=update_id+1
