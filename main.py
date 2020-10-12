@@ -20,7 +20,10 @@ def get_name(update):
     
 
 def get_message_text(update):
-    message_text = update["message"]["text"]
+    if(update["message"]["text"]):
+        message_text = update["message"]["text"]
+    elif(update["edited_message"]["text"]):
+        message_text = update["edited_message"]["text"]
     return message_text
 
 
