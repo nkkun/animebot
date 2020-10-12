@@ -63,13 +63,14 @@ def about(txt,update):
                 abo.append("Episodes: "+ str(so.find('a', class_='active').getText()))
                 for i in range(len(abo)):
                     s=s+abo[i]+'\n' + '\n'
-                send_message(get_chat_id(update),str(abo[i]))
+                send_message(get_chat_id(update),s)
             else:
                 send_message(get_chat_id(update),'Oni Chan! it appears that you have typed the name wrong or the link is broken :(')
         else:
              send_message(get_chat_id(update),'Oni Chan! it appears that you have typed the name wrong or the link is broken :(')
 
-
+#def batch(txt,update):
+    
 def sender(url,update):
     login={'_csrf': 0,
     'email': 'ransomsumit@aol.com',
@@ -125,10 +126,11 @@ def main():
                         title = page_soup.find_all('p', class_='name')
                         for i in range(len(title)):
                             title[i]=title[i].find('a')
-                 
+                        s=""
                         for tit in title:
                             link = tit.attrs['title']
-                            send_message(get_chat_id(update),str(link))
+                            s=s+str(link)+"\n \n"
+                        send_message(get_chat_id(update),s)
                         send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
                     update_id = last_update(url,update_id)["update_id"]
                     update_id = update_id+1
@@ -189,10 +191,15 @@ def main():
                     else:
                         send_message(get_chat_id(update),"wrongly written or Not available check again")
                     
-                '''else:
-                     send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
-                     update_id = last_update(url,update_id)["update_id"]
-                     update_id=update_id+1'''
+                '''elif(get_message_text(update).lower()[0:6]=="/batch"):
+                     if(get_message_text(update).lower()=='/batch'):
+                        send_message(get_chat_id(update),"/batch <episode range like '10-20'> <enter name as it was found in the search>")
+                        update_id = last_update(url,update_id)["update_id"]
+                        update_id = update_id+1
+                    else:
+                        batch(get_message_text(update).lower()[7:],update)
+                        update_id = last_update(url,update_id)["update_id"]
+                        update_id = update_id+1'''
         else:
             update_id = last_update(url,update_id)["update_id"]
             update_id=update_id+1
