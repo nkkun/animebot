@@ -21,8 +21,9 @@ def get_name(update):
 
 def get_message_text(update):
     if("message" in update.keys()):
-        message_text = update["message"]["text"]
-        return message_text
+        if('text' in update['message'].values()):
+            message_text = update["message"]["text"]
+            return message_text
 
 
 def last_update(req,offset=None):
