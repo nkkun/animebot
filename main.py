@@ -21,7 +21,7 @@ def get_name(update):
 
 def get_message_text(update):
     if("message" in update.keys()):
-        if('text' in update['message'].values()):
+        if('text' in update['message'].keys()):
             message_text = update["message"]["text"]
             return message_text
 
