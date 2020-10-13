@@ -113,14 +113,14 @@ def main():
         update = last_update(url)
         if(get_message_text(update)):
             if (update_id == update["update_id"]):
-                if (get_message_text(update).lower()=="hi" or get_message_text(update).lower()=="hello" or get_message_text(update).lower()=="hii"):
-                    send_message(get_chat_id(update),"Hello, " + get_name(update) + " type /search to start searching")
-                    update_id = last_update(url,update_id)["update_id"]
+                if (get_message_text(update).lower()=="/start"):
+                    send_message(get_chat_id(update),"Say hi")
                     update_id=update_id+1
 
                 
                 elif (get_message_text(update).lower()[:7]=="/search"):
-                    if(get_message_text(update).lower()=='/search'):
+                    if((get_message_text(update).lower()=='/search') or ((get_message_text(update).lower()[:7]=='/search')
+                                                                         and (get_message_text(update).lower()[-13:]=='@Any_Animebot'))):
                         send_message(get_chat_id(update),"/search <enter short name of the anime>")
                     else:
                         surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(get_message_text(update)[7:].lower().split()))
@@ -134,12 +134,13 @@ def main():
                             link = tit.attrs['title']
                             s=s+str(link)+"\n \n"
                         send_message(get_chat_id(update),s)
-                        send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" <--> for example "/link one piece episode 1"')
+                        send_message(get_chat_id(update),'copy the name of the anime you want, write "/link "+ paste the name + add the episode no. as "episode 1" \n for example "/link one piece episode 1"')
                     update_id = last_update(url,update_id)["update_id"]
                     update_id = update_id+1
                 
                 elif (get_message_text(update).lower()[:6]=="/about"):
-                    if(get_message_text(update).lower()=='/about'):
+                    if((get_message_text(update).lower()=='/about') or ((get_message_text(update).lower()[:6]=='/about')
+                                                                         and (get_message_text(update).lower()[-13:]=='@Any_Animebot'))):
                         send_message(get_chat_id(update),"/about <enter name as it was found in the search>")
                         update_id = last_update(url,update_id)["update_id"]
                         update_id = update_id+1
@@ -149,7 +150,8 @@ def main():
                         update_id = update_id+1
                     
                     
-                elif (get_message_text(update).lower()=="/help"):
+                elif ((get_message_text(update).lower()=="/help") or ((get_message_text(update).lower()[:5]=='/help')
+                                                                         and (get_message_text(update).lower()[-13:]=='@Any_Animebot'))):
                     send_message(get_chat_id(update),('/link < add anime name from search with episode "number" > \n' +
                                                       'for example "/link one piece episode 1" \n \n' + '/search < small anime tag such as "shippuden" > \n \n' +
                                                       '/updates "get you the latest anime releases" \n \n' + "/about <enter name as it was found in the search>"))
@@ -157,7 +159,8 @@ def main():
                     update_id=update_id+1
                 
 
-                elif (get_message_text(update).lower()=="/updates"):
+                elif ((get_message_text(update).lower()=="/updates") or ((get_message_text(update).lower()[:8]=='/updates')
+                                                                         and (get_message_text(update).lower()[-13:]=='@Any_Animebot'))):
                     surl4= 'https://gogoanime.so'
                     r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
                     souper=soup(r.content, "html.parser")
@@ -174,11 +177,6 @@ def main():
                     update_id = last_update(url,update_id)["update_id"]
                     update_id=update_id+1
 
-                
-                elif (get_message_text(update).lower()=="/start"):
-                    send_message(get_chat_id(update),"Say hi")
-                    update_id=update_id+1
-
             
                 elif (get_message_text(update).lower()[0:5]=="/link"):
                     s=get_message_text(update).lower()[6:]
@@ -190,7 +188,7 @@ def main():
                     if(validators.url(surl3)==True):
                         sender(surl3,update)
                     else:
-                        send_message(get_chat_id(update),"wrongly written or Not available check again")
+                        send_message(get_chat_id(update),"wrongly written or Not available check again \n format: /link one piece episode 1")
                 else:
                     update_id = last_update(url,update_id)["update_id"]
                     update_id = update_id+1
