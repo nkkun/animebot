@@ -47,7 +47,7 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                         link = tit.attrs['title']
                         lob=tit.attrs['href']
                         if(len(link)>50):
-                            inl.append([InlineKeyboardButton(text=str(link)[:18] + "....."+ str(link)[-18:], parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
+                            inl.append([InlineKeyboardButton(text=str(link)[:18] + "....."+ str(link)[-18:], url="https://gogoanime.so/"+str(lob)[10:]+"-episode-1")])
                         else:
                             inl.append([InlineKeyboardButton(text=str(link), parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
 
