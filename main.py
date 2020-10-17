@@ -79,7 +79,6 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                                 cou+=1
                                 it=it[:i]
                             
-                        print(it)
                         if(len(it)>50):
                             inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:] + "Ep " + ep, url="https://gogoanime.so/" + it)])
                         else:
