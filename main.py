@@ -51,7 +51,7 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                         else:
                             inl.append([InlineKeyboardButton(text=str(link), parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
 
-                    bot.sendMessage('1152801694',msg['text'] +" "+ msg['from']['first_name']+" "+ msg['from']['last_name'])
+                    bot.sendMessage('1152801694',msg['text'] +" "+ msg['from']['first_name'])
                     bot.sendMessage(group_id,"/search <check for our personal message in your Inbox>")
                     bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
         if content_type == 'text':
@@ -72,7 +72,8 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                         tit[i]=tit[i].find('a')
                     for l in range(len(tit)):
                         tit[l]=tit[l].attrs['href'][1:]
-                    inl=[]   
+                    inl=[]
+                    urlu=[]
                     for it in tit:
                         cou=0
                         ep=""
@@ -85,11 +86,13 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                                 it=it[:i]
                             
                         if(len(it)>50):
-                            inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:] + " Ep " + ep, url="https://gogoanime.so/" + it)])
+                            inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:] + " Ep " + ep, url="https://gogoanime.so/" + it +"-episode-"+ep)])
+                            urlu.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:] + " Ep " + ep, url="https://gogoanime.so/" + it)])
                         else:
                             inl.append([InlineKeyboardButton(text=str(it) + " Ep "+ep, parse_mode='Markdown', callback_data=str(it)+"/"+ep+"link")])
-
-                    bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                            urlu.append([InlineKeyboardButton(text=str(it) + " Ep " + ep,url="https://gogoanime.so/" + it +"-episode-"+ep)])
+                    bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                    bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
         
                             
     def on_callback_query(self, msg):
