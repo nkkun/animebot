@@ -29,9 +29,12 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                 chat_id= msg['from']['id']
                 if((msg['text'].lower()=='/search') or ((msg['text'].lower()[:7]=='/search')
                                                                          and (msg['text'][-13:]=='@Any_Animebot'))):
-                    bot.sendMessage(group_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
-                    bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
-                elif(msg['text'][:21]=='/search @Any_Animebot'):
+                    if(group_id==chat_id):
+                       bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                    else:
+                        bot.sendMessage(group_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                        bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                elif(msg['text'][:20]=='/search@Any_Animebot'):
                     bot.sendMessage(group_id,"/search <enter short name of the anime without the bot name>")
                 else:
                     s=msg['text'][7:]
@@ -91,8 +94,11 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                         else:
                             inl.append([InlineKeyboardButton(text=str(it) + " Ep "+ep, parse_mode='Markdown', callback_data=str(it)+"/"+ep+"link")])
                             urlu.append([InlineKeyboardButton(text=str(it) + " Ep " + ep,url="https://gogoanime.so/" + it +"-episode-"+ep)])
-                    bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
-                    bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
+                    if(msg['from']['id']==chat_id):
+                        bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                    else:
+                        bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                        bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
         
                             
     def on_callback_query(self, msg):
