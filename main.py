@@ -53,7 +53,40 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
             if msg['text'][:5] == '/help':
                 if((msg['text'].lower()=='/help') or ((msg['text'].lower()[:5]=='/help')
                                                                          and (msg['text'][-13:]=='@Any_Animebot'))):
-                    bot.sendMessage(chat_id,"Just type /search and the name of the anime with a space")
+                    bot.sendMessage(chat_id,"Just type /search plus the name of the anime with a space, we will send you a personal Message soon")
+
+        if content_type == 'text':
+            if msg['text'][:8] == '/updates':
+                if((msg['text'].lower()=='/updates') or ((msg['text'].lower()[:8]=='/updates')
+                                                                         and (msg['text'][-13:]=='@Any_Animebot'))):
+                    surl4= 'https://gogoanime.so/'
+                    r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
+                    souper=soup(r.content, "html.parser")
+                    tit = souper.find_all('p', class_='name')
+                    for i in range(len(tit)):
+                        tit[i]=tit[i].find('a')
+                    for l in range(len(tit)):
+                        tit[l]=tit[l].attrs['href'][1:]
+                    inl=[]   
+                    for it in tit:
+                        cou=0
+                        ep=""
+                        for i in range(-1,-20,-1):
+                            if(cou<1 and it[i]=="-"):
+                                cou+=1
+                                ep=it[i+1:]
+                            elif(cou==1 and it[i]=="-"):
+                                cou+=1
+                                it=it[:i]
+                            
+                        print(it)
+                        if(len(it)>50):
+                            inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:], url="https://gogoanime.so/" + it)])
+                        else:
+                            inl.append([InlineKeyboardButton(text=str(it),parse_mode='Markdown', callback_data=str(it)+"/"+ep+"link")])
+
+                    bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+        
                             
     def on_callback_query(self, msg):
         query_id, chat_id, query_data = telepot.glance(msg, flavor='callback_query')
