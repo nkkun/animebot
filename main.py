@@ -81,9 +81,9 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
                             
                         print(it)
                         if(len(it)>50):
-                            inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:], url="https://gogoanime.so/" + it)])
+                            inl.append([InlineKeyboardButton(text=str(it)[:18] + "....."+ str(it)[-18:] + "Ep " + ep, url="https://gogoanime.so/" + it)])
                         else:
-                            inl.append([InlineKeyboardButton(text=str(it),parse_mode='Markdown', callback_data=str(it)+"/"+ep+"link")])
+                            inl.append([InlineKeyboardButton(text=str(it) + "Ep "+ep, parse_mode='Markdown', callback_data=str(it)+"/"+ep+"link")])
 
                     bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
         
