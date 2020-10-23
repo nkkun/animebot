@@ -28,12 +28,12 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
             if msg['text'][:7] == '/search':
                 chat_id= msg['from']['id']
                 if((msg['text'].lower()=='/search') or ((msg['text'].lower()[:7]=='/search')
-                                                                         and (msg['text'][-13:]=='@Any_Animebot'))):
+                                                                         and (msg['text'][-14:]==' @Any_Animebot'))):
                     if(group_id==chat_id):
                        bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
                     else:
                         bot.sendMessage(group_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
-                        bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                        #bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
                 elif(msg['text'][:20]=='/search@Any_Animebot'):
                     bot.sendMessage(group_id,"/search <enter short name of the anime without the bot name>")
                 else:
@@ -61,7 +61,7 @@ class MsgWriten(telepot.helper.InlineUserHandler, telepot.helper.AnswererMixin):
             if msg['text'][:5] == '/help':
                 if((msg['text'].lower()=='/help') or ((msg['text'].lower()[:5]=='/help')
                                                                          and (msg['text'][-13:]=='@Any_Animebot'))):
-                    bot.sendMessage(chat_id,"Just type /search plus the name of the anime with a space, we will send you a personal Message soon")
+                    bot.sendMessage(chat_id,"Just type /search plus the name of the anime with a space, we will send you a Personal Message soon if something doesn't work contact @Ransom_s")
 
         if content_type == 'text':
             if msg['text'][:8] == '/updates':
