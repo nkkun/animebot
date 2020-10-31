@@ -25,15 +25,16 @@ def on_chat_message(msg):
             if((msg['text'].lower()=='/search') or ((msg['text'].lower()[:7]=='/search')
                                                                    and (msg['text'][-14:]==' @Any_Animebot'))):
                 if(group_id==chat_id):
-                    bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                    bot.sendMessage(chat_id,"/search 'enter short name of the anime and wait for our personal message in your Inbox'")
                 else:
-                    bot.sendMessage(group_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
-                        #bot.sendMessage(chat_id,"/search <enter short name of the anime and wait for our personal message in your Inbox>")
+                    bot.sendMessage(group_id,"/search 'enter short name of the anime and wait for our personal message in your Inbox'")
+                        
             elif(msg['text'][:20]=='/search@Any_Animebot'):
-                bot.sendMessage(group_id,"/search <enter short name of the anime without the bot name>")
+                bot.sendMessage(group_id,"/search 'enter short name of the anime without the bot name'")
             else:
-                s=msg['text'][7:]
-                surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(msg['text'][8:].lower().split()))
+                s=msg['text'][8:]
+                s = re.sub('\W+',' ', s)
+                surl2= 'https://gogoanime.so//search.html?keyword='+str("%20".join(s.lower().split()))
                 r = requests.get(surl2 , headers={'User-Agent': 'Mozilla/5.0'})
                 page_soup = soup(r.content, "html.parser")
                 title = page_soup.find_all('p', class_='name')
@@ -50,8 +51,11 @@ def on_chat_message(msg):
                         inl.append([InlineKeyboardButton(text=str(link), parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
 
                 bot.sendMessage('1152801694',msg['text'] +" "+ msg['from']['first_name'])
-                bot.sendMessage(group_id,"/search <check for our personal message in your Inbox>")
-                bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                if(group_id==chat_id):
+                    bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                else:
+                    bot.sendMessage(group_id,"/search <check for our personal message in your Inbox>")
+                    bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
     if content_type == 'text':
         if msg['text'][:5] == '/help':
             if((msg['text'].lower()=='/help') or ((msg['text'].lower()[:5]=='/help')
