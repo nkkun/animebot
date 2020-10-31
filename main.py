@@ -50,7 +50,7 @@ def on_chat_message(msg):
                     else:
                         inl.append([InlineKeyboardButton(text=str(link), parse_mode='Markdown', callback_data=str(lob)[10:]+"about")])
 
-                bot.sendMessage('1152801694',msg['text'] +" "+ msg['from']['first_name'])
+                bot.sendMessage('1152801694',msg['text'] +" "+ msg['from']['first_name'] +" " + msg['from']['username'])
                 if(group_id==chat_id):
                     bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
                 else:
