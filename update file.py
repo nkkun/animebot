@@ -14,5 +14,4 @@ media = json.dumps({
 message = f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageMedia?chat_id={CHAT_ID}&message_id={MESSAGE_ID}&media={media}"
 
 result = requests.post(message)
-
 print(result.json())
