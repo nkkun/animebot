@@ -28,9 +28,11 @@ def on_chat_message(msg):
                     bot.sendMessage(chat_id,"/search 'enter short name of the anime and wait for our personal message in your Inbox'")
                 else:
                     bot.sendMessage(group_id,"/search 'enter short name of the anime and wait for our personal message in your Inbox'")
+                    bot.sendMessage(chat_id,"/search 'enter short name of the anime and wait for our personal message in your Inbox'")
                         
             elif(msg['text'][:20]=='/search@Any_Animebot'):
                 bot.sendMessage(group_id,"/search 'enter short name of the anime without the bot name'")
+                bot.sendMessage(chat_id,"/search 'enter short name of the anime without the bot name'")
             else:
                 s=msg['text'][8:]
                 s = re.sub('\W+',' ', s)
@@ -328,30 +330,6 @@ def on_callback_query(msg):
         ide=(chat_id,msg['message']['message_id'])
         bot.answerCallbackQuery(query_id, text="Search Again", show_alert = True)
             
-        
-    '''def on_inline_query(self, msg):
-        def compute():
-            query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
-            print(self.id, ':', 'Inline Query:', query_id, from_id, query_string)
-
-            self._count += 1
-            text = '%d. %s' % (self._count, query_string)
-
-            articles = [InlineQueryResultArticle(
-                            id='abc',
-                            title=text,
-                            input_message_content=InputTextMessageContent(
-                                message_text=text
-                            )
-                       )]
-
-            return articles
-
-        self.answerer.answer(msg, compute)
-
-    def on_chosen_inline_result(self, msg):
-        result_id, from_id, query_string = telepot.glance(msg, flavor='chosen_inline_result')
-        print('Chosen Inline Result:', result_id, from_id, query_string)'''
 
 TOKEN= "1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk"
 
