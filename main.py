@@ -59,7 +59,7 @@ def on_chat_message(msg):
                 if(group_id==chat_id):
                     bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
                 else:
-                    bot.sendMessage(group_id,"/search <check for our personal message in your Inbox>")
+                    bot.sendMessage(group_id,"/search <check for our personal message in your Inbox, if didn't recieve any just DM the bot once then search again>")
                     bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
     if content_type == 'text':
         if msg['text'][:5] == '/help':
@@ -102,7 +102,7 @@ def on_chat_message(msg):
                     bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
                 else:
                     bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
-                    bot.sendMessage(chat_id,"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
+                    bot.sendMessage(chat_id,"Latest Updates in anime world. DM the bot for direct download/play link",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
         
                             
 def on_callback_query(msg):
