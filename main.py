@@ -46,7 +46,8 @@ def on_chat_message(msg):
                 else:
                     bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
                 bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
-
+        if msg['text'][:5] == '/help':
+                bot.sendMessage(group_id,"Just type /search plus the name of the anime with a space, we will send you a Personal Message soon if something doesn't work contact @Ransom_s")
 
 def check_chat_id(poster, clicker):
     if (poster == clicker):
