@@ -19,7 +19,7 @@ def on_chat_message(msg):
             if ((msg['text'].lower() == '/search') or ((msg['text'].lower()[:7] == '/search')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
                                                         'text'].lower()[:20] == "/search@Any_Animebot"):
-                bot.sendDocument(chat_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
+                bot.sendDocument(group_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
             else:
                 s = msg['text'][8:]
                 s = re.sub('\W+', ' ', s)
