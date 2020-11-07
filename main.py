@@ -110,6 +110,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                     inl.append(temp)
                     temp = []
                 else:
+<<<<<<< HEAD
                     url = "https://gogoanime.so/" + url_main[30:] + "-episode-" + str(i)
                     url = q.bitly.short(url)
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
@@ -117,6 +118,15 @@ def episode_matrix(url_main, chat_id, ide, typ):
                     if (i == int(abo)):
                         inl.append(temp)
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
+=======
+                    bot.sendMessage(group_id,"/search <check for our personal message in your Inbox, if didn't recieve any just DM the bot once then search again>")
+                    bot.sendMessage(chat_id,"RESULTS",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+    if content_type == 'text':
+        if msg['text'][:5] == '/help':
+            if((msg['text'].lower()=='/help') or ((msg['text'].lower()[:5]=='/help')
+                                                                     and (msg['text'][-13:]=='@Any_Animebot'))):
+                bot.sendMessage(chat_id,"Just type /search plus the name of the anime with a space, we will send you a Personal Message soon if something doesn't work contact @Ransom_s")
+>>>>>>> 29b4632717f370211ab76cbb24a3609828795677
 
         elif (int(abo) // 28 == 1):
             temp = []
@@ -129,6 +139,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                     inl.append(temp)
                     temp = []
                 else:
+<<<<<<< HEAD
                     url = "https://gogoanime.so/" + url_main[30:] + "-episode-" + str(i)
                     url = q.bitly.short(url)
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
@@ -139,6 +150,14 @@ def episode_matrix(url_main, chat_id, ide, typ):
             inl[3].append(InlineKeyboardButton(text="26-" + str(abo), parse_mode='Markdown',
                                                callback_data=url_main + "%26-" + str(abo) + "/#"+ str(chat_id)))
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
+=======
+                    bot.sendMessage(msg['from']['id'],"Latest Updates in anime world",reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                    bot.sendMessage(chat_id,"Latest Updates in anime world. DM the bot for direct download/play link",reply_markup = InlineKeyboardMarkup(inline_keyboard=urlu))
+        
+                            
+def on_callback_query(msg):
+    query_id, chat_id, query_data = telepot.glance(msg, flavor='callback_query')
+>>>>>>> 29b4632717f370211ab76cbb24a3609828795677
 
         else:
             temp = []
