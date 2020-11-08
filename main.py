@@ -20,7 +20,7 @@ def on_chat_message(msg):
             if ((msg['text'].lower() == '/search') or ((msg['text'].lower()[:7] == '/search')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
                                                         'text'].lower()[:20] == "/search@Any_Animebot"):
-                bot.sendDocument(chat_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
+                bot.sendDocument(group_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
             else:
                 s = msg['text'][8:]
                 s = re.sub('\W+', ' ', s)
@@ -52,7 +52,7 @@ def on_chat_message(msg):
             if ((msg['text'].lower() == '/index') or ((msg['text'].lower()[:6] == '/index')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
                                                         'text'].lower()[:19] == "/index@Any_Animebot"):
-                bot.sendDocument(chat_id, "https://i.imgur.com/n7p6W5i.gif", caption="/index  <𝖇𝖊𝖌𝖎𝖓 𝖜𝖎𝖙𝖍>")
+                bot.sendDocument(group_id, "https://i.imgur.com/n7p6W5i.gif", caption="/index  <𝖇𝖊𝖌𝖎𝖓 𝖜𝖎𝖙𝖍>")
             else:
                 s = msg['text'][7:]
                 if(s.find("#") != -1):
