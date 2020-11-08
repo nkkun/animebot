@@ -454,7 +454,6 @@ def on_callback_query(msg):
                 else:
                     num+=s[i]
             num = int(num[::-1])
-            print(s[:pos])
             result = search(s[:pos])
             res =""
             if(20*num >=len(result)):
@@ -463,12 +462,11 @@ def on_callback_query(msg):
                 end = 20*num
             for i in range(20*(num-1),end):
                 res+=result[i]
-            print(len(result))
-            print(end)
             bot.editMessageText((group_id, msg['message']['message_id'] -1), res)
             inl=[]
             if(num==1):
                 inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
+                inl.append(InlineKeyboardButton(text = str(num) , parse_mode='Markdown', callback_data = "jsjhs"))
             else:
                 inl.append(InlineKeyboardButton(text = "<< " + str(num-1), parse_mode='Markdown', callback_data = s[:pos] + "*" +str(num-1) +"*#" +str(chat_id)))
                 inl.append(InlineKeyboardButton(text = str(num) , parse_mode='Markdown', callback_data = "jsjhs"))
