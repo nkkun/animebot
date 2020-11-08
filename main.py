@@ -3,6 +3,7 @@ import time
 import telepot
 import requests
 import pyshorteners
+from index1 import search
 from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 
@@ -19,7 +20,7 @@ def on_chat_message(msg):
             if ((msg['text'].lower() == '/search') or ((msg['text'].lower()[:7] == '/search')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
                                                         'text'].lower()[:20] == "/search@Any_Animebot"):
-                bot.sendDocument(group_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
+                bot.sendDocument(chat_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
             else:
                 s = msg['text'][8:]
                 s = re.sub('\W+', ' ', s)
@@ -46,8 +47,37 @@ def on_chat_message(msg):
                 else:
                     bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
                 bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
-        if msg['text'][:5] == '/help':
-                bot.sendMessage(group_id,"Just type /search plus the name of the anime with a space, we will send you a Personal Message soon if something doesn't work contact @Ransom_s")
+
+        elif msg['text'][:6] == '/index':
+            if ((msg['text'].lower() == '/index') or ((msg['text'].lower()[:6] == '/index')
+                                                       and (msg['text'][-13:] == '@Any_Animebot')) or msg[
+                                                        'text'].lower()[:19] == "/index@Any_Animebot"):
+                bot.sendDocument(chat_id, "https://i.imgur.com/n7p6W5i.gif", caption="/index  <𝖇𝖊𝖌𝖎𝖓 𝖜𝖎𝖙𝖍>")
+            else:
+                s = msg['text'][7:]
+                if(s.find("#") != -1):
+                    bot.sendMessage(group_id, "# in word is forbidden")
+                else:
+                    result = search(s)
+                    if (len(result) == 0):
+                        bot.sendMessage(group_id, "OwO nothing with that keyword" )
+                    else:
+                        count = len(result)
+                        if(count<=20):
+                            res = ""
+                            for i in result:
+                                res+=i
+                            bot.sendMessage(group_id, res)
+                        else:
+                            res = ""
+                            for i in range(20):
+                                res+=result[i]
+                            inl=[]
+                            inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
+                            inl.append(InlineKeyboardButton(text = "1" , parse_mode='Markdown', callback_data = "jsjhs"))
+                            inl.append(InlineKeyboardButton(text = ">>" , parse_mode='Markdown', callback_data = s + "*2*#" +str(chat_id)))
+                            bot.sendMessage(group_id, res)
+                            bot.sendMessage(group_id, "Query:" + s + ", Use the slider to jump pages " ,reply_markup = InlineKeyboardMarkup(inline_keyboard=[inl]))
 
 def check_chat_id(poster, clicker):
     if (poster == clicker):
@@ -413,6 +443,41 @@ def on_callback_query(msg):
                     q = q + i
             high = int(q)
             range_expand(m[:pos], low, high, typ, chat_id, ide)
+
+        elif (query_data[hash_position - 1] == "*"):
+            s= query_data[:hash_position-1]
+            num=""
+            for i in range(-1,-5,-1):
+                if(s[i]=="*"):
+                    pos = i
+                    break
+                else:
+                    num+=s[i]
+            num = int(num[::-1])
+            print(s[:pos])
+            result = search(s[:pos])
+            res =""
+            if(20*num >=len(result)):
+                end = len(result)
+            else:
+                end = 20*num
+            for i in range(20*(num-1),end):
+                res+=result[i]
+            print(len(result))
+            print(end)
+            bot.editMessageText((group_id, msg['message']['message_id'] -1), res)
+            inl=[]
+            if(num==1):
+                inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
+            else:
+                inl.append(InlineKeyboardButton(text = "<< " + str(num-1), parse_mode='Markdown', callback_data = s[:pos] + "*" +str(num-1) +"*#" +str(chat_id)))
+                inl.append(InlineKeyboardButton(text = str(num) , parse_mode='Markdown', callback_data = "jsjhs"))
+            if(end == len(result)):
+                inl.append(InlineKeyboardButton(text = "end", parse_mode='Markdown', callback_data = "dhddh"))
+            else:
+                inl.append(InlineKeyboardButton(text = str(num+1) + " >>", parse_mode='Markdown', callback_data = s[:pos] + "*" +str(num+1) +"*#" +str(chat_id)))
+            bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=[inl]))
+
         elif (query_data[hash_position - 2:hash_position] == "li"):
             if (query_data[hash_position - 3] == "%"):
                 url = query_data[:hash_position - 3]
