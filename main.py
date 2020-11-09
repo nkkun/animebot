@@ -79,6 +79,37 @@ def on_chat_message(msg):
                             bot.sendMessage(group_id, res)
                             bot.sendMessage(group_id, "Query:" + s + ", Use the slider to jump pages " ,reply_markup = InlineKeyboardMarkup(inline_keyboard=[inl]))
 
+        elif msg['text'][:8] == '/updates':
+            surl4= 'https://gogoanime.so/'
+            r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
+            souper=soup(r.content, "html.parser")
+            tit = souper.find_all('p', class_='name')
+            for i in range(len(tit)):
+                tit[i]=tit[i].find('a')
+            for l in range(len(tit)):
+                tit[l]=tit[l].attrs['href'][1:]
+            inl=[]
+            for it in tit:
+                cou=0
+                ep=""
+                for i in range(-1,-20,-1):
+                    if(cou<1 and it[i]=="-"):
+                        cou+=1
+                        ep=it[i+1:]
+                    elif(cou==1 and it[i]=="-"):
+                        cou+=1
+                        it=it[:i]
+                if(len(it)>40):
+                    link = q.bitly.short('https://gogoanime.so/' + it + "-episode-" + ep)
+                    inl.append([InlineKeyboardButton(text=str(it) + "Ep" + ep, parse_mode='Markdown',
+                                                         callback_data=link + "%li#" + str(chat_id))])
+                else:
+                    inl.append([InlineKeyboardButton(text=str(it) + " Ep "+ep, parse_mode='Markdown', callback_data=str(it)+"@"+ep+"li#" + str(chat_id))])
+                bot.sendMessage(group_id,"Latest Updates in anime world", reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))    
+
+        elif msg['text'][:5] == '/help':
+                bot.sendMessage(group_id,"Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n  if something doesn't work contact @Ransom_s")
+
 def check_chat_id(poster, clicker):
     if (poster == clicker):
         return True
