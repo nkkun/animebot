@@ -6,7 +6,6 @@ import pyshorteners
 from index1 import search
 from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
-
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -36,7 +35,7 @@ def on_chat_message(msg):
                     lob = tit.attrs['href']
                     if (len(lob[10:]) > 40):
                         link = q.bitly.short('https://gogoanime.so' + lob)
-                        inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
+                        inl.append([InlineKeyboardButton(text=str(name[:20]) +"...." + str(name[-20:]), parse_mode='Markdown',
                                                          callback_data=link + "%ab#" + str(chat_id))])
                     else:
                         inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
