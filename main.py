@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
-
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
@@ -35,7 +34,7 @@ def on_chat_message(msg):
                     lob = tit.attrs['href']
                     if (len(lob[10:]) > 40):
                         link = q.bitly.short('https://gogoanime.so' + lob)
-                        inl.append([InlineKeyboardButton(text=str(name[:20]) +"...." + str(name[-20:]), parse_mode='Markdown',
+                        inl.append([InlineKeyboardButton(text=str(name[:23]) +"...." + str(name[-23:]), parse_mode='Markdown',
                                                          callback_data=link + "%ab#" + str(chat_id))])
                     else:
                         inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
@@ -75,8 +74,7 @@ def on_chat_message(msg):
                             inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
                             inl.append(InlineKeyboardButton(text = "1" , parse_mode='Markdown', callback_data = "jsjhs"))
                             inl.append(InlineKeyboardButton(text = ">>" , parse_mode='Markdown', callback_data = s + "*2*#" +str(chat_id)))
-                            bot.sendMessage(group_id, res)
-                            bot.sendMessage(group_id, "Query:" + s + ", Use the slider to jump pages " ,reply_markup = InlineKeyboardMarkup(inline_keyboard=[inl]))
+                            bot.sendMessage(group_id, res + "\n \n Query:" + s + ", Use the slider to jump pages " ,reply_markup = InlineKeyboardMarkup(inline_keyboard=[inl]))
 
         elif msg['text'][:8] == '/updates':
             surl4= 'https://gogoanime.so/'
@@ -242,7 +240,6 @@ def episode_matrix(url_main, chat_id, ide, typ):
                     if (i == int(abo)):
                         inl.append(temp)
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
-        #"https://gogoanime.so/" + + "-episode-" + str(i)
         elif (int(abo) // 28 == 1):
             temp = []
             for i in range(1, 26):
@@ -475,7 +472,7 @@ def on_callback_query(msg):
             range_expand(m[:pos], low, high, typ, chat_id, ide)
 
         elif (query_data[hash_position - 1] == "*"):
-            s= query_data[:hash_position-1]
+            s = query_data[:hash_position-1]
             num=""
             for i in range(-1,-5,-1):
                 if(s[i]=="*"):
@@ -492,7 +489,7 @@ def on_callback_query(msg):
                 end = 20*num
             for i in range(20*(num-1),end):
                 res+=result[i]
-            bot.editMessageText((group_id, msg['message']['message_id'] -1), res)
+            bot.editMessageText((group_id, msg['message']['message_id']), res)
             inl=[]
             if(num==1):
                 inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
