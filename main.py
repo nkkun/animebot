@@ -4,6 +4,7 @@ import telepot
 import requests
 import pyshorteners
 from index1 import search
+from watchorder import watchsearch
 from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -46,6 +47,25 @@ def on_chat_message(msg):
                     bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
                 bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
+        elif msg['text'][:11] == "/watchorder":
+            if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
+                                                       and (msg['text'][-13:] == '@Any_Animebot')) or msg[
+                                                        'text'].lower()[:24] == "/watchorder@Any_Animebot"):
+                bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif", caption="/index <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
+            else:
+                result = watchsearch(msg['text'][12:])
+                if len(result) == 0:
+                    bot.sendMessage(group_id, "OwO nothing found")
+                else:
+                    inl = []
+                    for i in result.keys():
+                        if(len(inl)>10):
+                            break
+                        else:
+                            inl.append([InlineKeyboardButton(text = i, url = result[i])])
+                    bot.sendMessage(group_id, "Results" ,reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+
+                
         elif msg['text'][:6] == '/index':
             if ((msg['text'].lower() == '/index') or ((msg['text'].lower()[:6] == '/index')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
@@ -583,7 +603,7 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
-TOKEN = "1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk"
+TOKEN = "1324074534:AAH2WfmQT0M-Iv_H46iO0fz6qVStuvqeLY4"
 
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
