@@ -603,7 +603,7 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
-TOKEN = "1324074534:AAH2WfmQT0M-Iv_H46iO0fz6qVStuvqeLY4"
+TOKEN = "1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk"
 
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
