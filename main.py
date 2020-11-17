@@ -51,7 +51,7 @@ def on_chat_message(msg):
             if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
                                                         'text'].lower()[:24] == "/watchorder@Any_Animebot"):
-                bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif", caption="/index <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
+                bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif", caption="/watchorder <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
             else:
                 result = watchsearch(msg['text'][12:])
                 if len(result) == 0:
