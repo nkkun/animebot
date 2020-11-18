@@ -15,6 +15,6 @@ def watchsearch(st):
     ret = {}
     keys = list(index.keys())
     for i in range(len(keys)):
-        if st in keys[i].lower():
+        if st.lower() in keys[i].lower():
             ret[keys[i]] = index[keys[i]]
     return ret
