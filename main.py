@@ -12,6 +12,16 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
+    if content_type == 'text' and 'reply_to_message' in msg.keys():
+        if (msg['text'].lower() == "#request" and str(msg['reply_to_message']['chat']['id']) == "-1001308073740"):
+            reply = msg['reply_to_message']
+            from_id = reply['from']['id']
+            name = reply['from']['first_name']
+            if 'username' in reply['from'].keys():
+                name = name + " @" + reply['from']['username']
+            query = reply['text']
+            request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
+            bot.sendMessage("-1001467729523", request_total)
     group_id = chat_id
     chat_id = msg['from']['id']
     if content_type == 'text':
