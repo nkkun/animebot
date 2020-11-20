@@ -23,7 +23,7 @@ def on_chat_message(msg):
                 name = name + " @" + reply['from']['username']
             query = reply['text']
             request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
-            bot.sendMessage("-1001308073740", "Submitted your desires to admins @"  + reply['from']['username'] + " kun!!")
+            bot.sendMessage("-1001308073740", "Submitted your desires to admins "  + reply['from']['first_name'] + " kun!!")
             bot.sendMessage("-1001467729523", request_total)
     group_id = chat_id
     chat_id = msg['from']['id']
