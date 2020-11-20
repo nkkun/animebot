@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
+
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
@@ -29,7 +30,8 @@ def on_chat_message(msg):
         if msg['text'][:7] == '/search':
             if ((msg['text'].lower() == '/search') or ((msg['text'].lower()[:7] == '/search')
                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
-                                                        'text'].lower()[:20] == "/search@Any_Animebot"):
+                                                                                                          'text'].lower()[
+                                                                                                      :20] == "/search@Any_Animebot"):
                 bot.sendDocument(group_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
             else:
                 s = msg['text'][8:]
@@ -46,11 +48,12 @@ def on_chat_message(msg):
                     lob = tit.attrs['href']
                     if (len(lob[10:]) > 40):
                         link = q.bitly.short('https://gogoanime.so' + lob)
-                        inl.append([InlineKeyboardButton(text=str(name[:20]) +"...." + str(name[-23:]), parse_mode='Markdown',
-                                                         callback_data=link + "%ab#" + str(chat_id))])
+                        inl.append(
+                            [InlineKeyboardButton(text=str(name[:20]) + "...." + str(name[-23:]), parse_mode='Markdown',
+                                                  callback_data=link + "%ab#" + str(chat_id))])
                     else:
                         inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
-                                                        callback_data=str(lob)[10:] + "@ab#" + str(chat_id))])
+                                                         callback_data=str(lob)[10:] + "@ab#" + str(chat_id))])
                 if ('username' in msg['from']):
                     bot.sendMessage('1152801694',
                                     msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
@@ -60,9 +63,11 @@ def on_chat_message(msg):
 
         elif msg['text'][:11] == "/watchorder":
             if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
-                                                       and (msg['text'][-13:] == '@Any_Animebot')) or msg[
-                                                        'text'].lower()[:24] == "/watchorder@Any_Animebot"):
-                bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif", caption="/watchorder <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
+                                                           and (msg['text'][-13:] == '@Any_Animebot')) or msg[
+                                                                                                              'text'].lower()[
+                                                                                                          :24] == "/watchorder@Any_Animebot"):
+                bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif",
+                                 caption="/watchorder <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
             else:
                 result = watchsearch(msg['text'][12:])
                 if len(result) == 0:
@@ -70,73 +75,80 @@ def on_chat_message(msg):
                 else:
                     inl = []
                     for i in result.keys():
-                        if(len(inl)>10):
+                        if (len(inl) > 10):
                             break
                         else:
-                            inl.append([InlineKeyboardButton(text = i, url = result[i])])
-                    bot.sendMessage(group_id, "Results" ,reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))
+                            inl.append([InlineKeyboardButton(text=i, url=result[i])])
+                    bot.sendMessage(group_id, "Results", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
-                
+
         elif msg['text'][:6] == '/index':
             if ((msg['text'].lower() == '/index') or ((msg['text'].lower()[:6] == '/index')
-                                                       and (msg['text'][-13:] == '@Any_Animebot')) or msg[
-                                                        'text'].lower()[:19] == "/index@Any_Animebot"):
+                                                      and (msg['text'][-13:] == '@Any_Animebot')) or msg[
+                                                                                                         'text'].lower()[
+                                                                                                     :19] == "/index@Any_Animebot"):
                 bot.sendDocument(group_id, "https://i.imgur.com/n7p6W5i.gif", caption="/index  <𝖇𝖊𝖌𝖎𝖓 𝖜𝖎𝖙𝖍>")
             else:
                 s = msg['text'][7:]
-                if(s.find("#") != -1):
+                if (s.find("#") != -1):
                     bot.sendMessage(group_id, "# in word is forbidden")
                 else:
                     result = search(s)
                     if (len(result) == 0):
-                        bot.sendMessage(group_id, "OwO nothing with that keyword" )
+                        bot.sendMessage(group_id, "OwO nothing with that keyword")
                     else:
                         count = len(result)
-                        if(count<=20):
+                        if (count <= 20):
                             res = ""
                             for i in result:
-                                res+=i
+                                res += i
                             bot.sendMessage(group_id, res)
                         else:
                             res = ""
                             for i in range(20):
-                                res+=result[i]
-                            inl=[]
-                            inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
-                            inl.append(InlineKeyboardButton(text = "1" , parse_mode='Markdown', callback_data = "jsjhs"))
-                            inl.append(InlineKeyboardButton(text = ">>" , parse_mode='Markdown', callback_data = s + "*2*#" +str(chat_id)))
-                            bot.sendMessage(group_id, res + "\n \n Query:" + s + ", Use the slider to jump pages " ,reply_markup = InlineKeyboardMarkup(inline_keyboard=[inl]))
+                                res += result[i]
+                            inl = []
+                            inl.append(InlineKeyboardButton(text="N/A", parse_mode='Markdown', callback_data="hshsh"))
+                            inl.append(InlineKeyboardButton(text="1", parse_mode='Markdown', callback_data="jsjhs"))
+                            inl.append(InlineKeyboardButton(text=">>", parse_mode='Markdown',
+                                                            callback_data=s + "*2*#" + str(chat_id)))
+                            bot.sendMessage(group_id, res + "\n \n Query:" + s + ", Use the slider to jump pages ",
+                                            reply_markup=InlineKeyboardMarkup(inline_keyboard=[inl]))
 
         elif msg['text'][:8] == '/updates':
-            surl4= 'https://gogoanime.so/'
-            r = requests.get(surl4 , headers={'User-Agent': 'Mozilla/5.0'})
-            souper=soup(r.content, "html.parser")
+            surl4 = 'https://gogoanime.so/'
+            r = requests.get(surl4, headers={'User-Agent': 'Mozilla/5.0'})
+            souper = soup(r.content, "html.parser")
             tit = souper.find_all('p', class_='name')
             for i in range(len(tit)):
-                tit[i]=tit[i].find('a')
+                tit[i] = tit[i].find('a')
             for l in range(len(tit)):
-                tit[l]=tit[l].attrs['href'][1:]
-            inl=[]
+                tit[l] = tit[l].attrs['href'][1:]
+            inl = []
             for it in tit:
-                cou=0
-                ep=""
-                for i in range(-1,-20,-1):
-                    if(cou<1 and it[i]=="-"):
-                        cou+=1
-                        ep=it[i+1:]
-                    elif(cou==1 and it[i]=="-"):
-                        cou+=1
-                        it=it[:i]
-                if(len(it)>40):
+                cou = 0
+                ep = ""
+                for i in range(-1, -20, -1):
+                    if (cou < 1 and it[i] == "-"):
+                        cou += 1
+                        ep = it[i + 1:]
+                    elif (cou == 1 and it[i] == "-"):
+                        cou += 1
+                        it = it[:i]
+                if (len(it) > 40):
                     link = q.bitly.short('https://gogoanime.so/' + it + "-episode-" + ep)
                     inl.append([InlineKeyboardButton(text=str(it) + "Ep" + ep, parse_mode='Markdown',
-                                                         callback_data=link + "%li#" + str(chat_id))])
+                                                     callback_data=link + "%li#" + str(chat_id))])
                 else:
-                    inl.append([InlineKeyboardButton(text=str(it) + " Ep "+ep, parse_mode='Markdown', callback_data=str(it)+"@"+ep+"li#" + str(chat_id))])
-            bot.sendMessage(group_id,"Latest Updates in anime world", reply_markup = InlineKeyboardMarkup(inline_keyboard=inl))    
+                    inl.append([InlineKeyboardButton(text=str(it) + " Ep " + ep, parse_mode='Markdown',
+                                                     callback_data=str(it) + "@" + ep + "li#" + str(chat_id))])
+            bot.sendMessage(group_id, "Latest Updates in anime world",
+                            reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         elif msg['text'][:5] == '/help':
-                bot.sendMessage(group_id,"Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n \nif something doesn't work contact @Ransom_s")
+            bot.sendMessage(group_id,
+                            "Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n \nif something doesn't work contact @Ransom_s")
+
 
 def check_chat_id(poster, clicker):
     if (poster == clicker):
@@ -181,6 +193,7 @@ def about(url, chat_id, group_id, typ):
     bot.sendMessage(group_id, "Choose your episode from the list",
                     reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
+
 def episode_matrix(url_main, chat_id, ide, typ):
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
     r = requests.get(url_main, headers={'User-Agent': 'Mozilla/5.0'})
@@ -193,7 +206,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
             temp = []
             for i in range(1, int(abo) + 1):
                 if (i % 7 == 0):
-                    url = "https://gogoanime.so/" + url_main[30:] + "-episode-" +str(i)
+                    url = "https://gogoanime.so/" + url_main[30:] + "-episode-" + str(i)
                     url = q.bitly.short(url)
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
                                                      callback_data=url + "%li#" + str(chat_id)))
@@ -227,7 +240,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                         inl.append(temp)
             url_main = q.bitly.short(url_main)
             inl[3].append(InlineKeyboardButton(text="26-" + str(abo), parse_mode='Markdown',
-                                               callback_data=url_main + "%26-" + str(abo) + "/#"+ str(chat_id)))
+                                               callback_data=url_main + "%26-" + str(abo) + "/#" + str(chat_id)))
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         else:
@@ -239,13 +252,13 @@ def episode_matrix(url_main, chat_id, ide, typ):
                 if (i % 4 == 0):
                     url_main = q.bitly.short(url_main)
                     temp.append(InlineKeyboardButton(text=str(low) + "-" + str(high), parse_mode='Markdown',
-                                                     callback_data= url_main + "%" + str(low) + "-" + str(
+                                                     callback_data=url_main + "%" + str(low) + "-" + str(
                                                          high) + "/#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
                     url_main = q.bitly.short(url_main)
-                    temp.append(InlineKeyboardButton(text= str(low) + "-" + str(high), parse_mode='Markdown',
+                    temp.append(InlineKeyboardButton(text=str(low) + "-" + str(high), parse_mode='Markdown',
                                                      callback_data=url_main + "%" + str(low) + "-" + str(
                                                          high) + "/#" + str(chat_id)))
                     if (i == 15):
@@ -261,13 +274,13 @@ def episode_matrix(url_main, chat_id, ide, typ):
                 if (i % 7 == 0):
                     url = url_main[30:]
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
-                                                     callback_data=url + "@" + str(i) +"li#" + str(chat_id)))
+                                                     callback_data=url + "@" + str(i) + "li#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
                     url = url_main[30:]
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
-                                                     callback_data=url + "@" + str(i) +"li#" + str(chat_id)))
+                                                     callback_data=url + "@" + str(i) + "li#" + str(chat_id)))
                     if (i == int(abo)):
                         inl.append(temp)
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
@@ -277,7 +290,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                 if (i % 7 == 0):
                     url = url_main[30:]
                     temp.append(InlineKeyboardButton(text=str(i), parse_mode='Markdown',
-                                                     callback_data=url + "@" + str(i) +"li#" + str(chat_id)))
+                                                     callback_data=url + "@" + str(i) + "li#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
@@ -287,7 +300,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                     if (i == 25):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text="26-" + str(abo), parse_mode='Markdown',
-                                               callback_data=url_main[30:] + "@26-" + str(abo) + "/#"+ str(chat_id)))
+                                               callback_data=url_main[30:] + "@26-" + str(abo) + "/#" + str(chat_id)))
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         else:
@@ -298,7 +311,7 @@ def episode_matrix(url_main, chat_id, ide, typ):
                 high = rem * i
                 if (i % 4 == 0):
                     temp.append(InlineKeyboardButton(text=str(low) + "-" + str(high), parse_mode='Markdown',
-                                                     callback_data= url_main[30:] + "@" + str(low) + "-" + str(
+                                                     callback_data=url_main[30:] + "@" + str(low) + "-" + str(
                                                          high) + "/#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
@@ -313,9 +326,10 @@ def episode_matrix(url_main, chat_id, ide, typ):
                                                              "/#" + str(chat_id)))
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
+
 def range_expand(url_main, low, high, typ, chat_id, ide):
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
-    if(typ == "%"):
+    if (typ == "%"):
         url = q.bitly.expand(url_main)
         inl = []
         if (high - low + 1 <= 16):
@@ -335,7 +349,8 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                                                      callback_data=url + "%li#" + str(chat_id)))
             inl.append(temp)
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown', callback_data=url_main + "%ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "%ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
@@ -358,9 +373,10 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text=str(low + 15) + "-" + str(high), parse_mode='Markdown',
                                                callback_data=url_main + "%" + str(low + 15) + "-" + str(
-                                                  high) + "/#" + str(chat_id)))
+                                                   high) + "/#" + str(chat_id)))
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown',callback_data=url_main + "%ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "%ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         else:
@@ -384,28 +400,31 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text=str(low + rem * 15) + "-" + str(high), parse_mode='Markdown',
                                                callback_data=url_main
-                                            + "%" + str(low + rem * 15) + "-" + str(high) + "/#" + str(chat_id)))
+                                                             + "%" + str(low + rem * 15) + "-" + str(high) + "/#" + str(
+                                                   chat_id)))
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown', callback_data=url_main + "%ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "%ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
     else:
-        inl=[]
+        inl = []
         if (high - low + 1 <= 16):
             temp = []
             for i in range(1, high - low + 2):
                 if (i % 4 == 0):
                     temp.append(InlineKeyboardButton(text=str(low - 1 + i), parse_mode='Markdown',
                                                      callback_data=url_main + "@" + str(
-                                                         low - 1 + i) + "li#"+ str(chat_id)))
+                                                         low - 1 + i) + "li#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
-                    temp.append(InlineKeyboardButton(text= str(low - 1 + i), parse_mode='Markdown',
-                                                     callback_data=url_main+ "@" + str(
-                                                         low - 1 + i) + "li#"+ str(chat_id)))
+                    temp.append(InlineKeyboardButton(text=str(low - 1 + i), parse_mode='Markdown',
+                                                     callback_data=url_main + "@" + str(
+                                                         low - 1 + i) + "li#" + str(chat_id)))
             inl.append(temp)
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown', callback_data=url_main + "@ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "@ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
@@ -415,20 +434,21 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                 if (i % 4 == 0):
                     temp.append(InlineKeyboardButton(text=str(low - 1 + i), parse_mode='Markdown',
                                                      callback_data=url_main + "@" + str(
-                                                         low - 1 + i) + "li#"+ str(chat_id)))
+                                                         low - 1 + i) + "li#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
                     temp.append(InlineKeyboardButton(text=str(low - 1 + i), parse_mode='Markdown',
                                                      callback_data=url_main + "@" + str(
-                                                         low - 1 + i) + "li#"+ str(chat_id)))
+                                                         low - 1 + i) + "li#" + str(chat_id)))
                     if (i == 15):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text=str(low + 15) + "-" + str(high), parse_mode='Markdown',
-                                               callback_data=url_main+ "@" + str(low + 15) + "-" + str(
-                                                   high) + "/#"+ str(chat_id)))
+                                               callback_data=url_main + "@" + str(low + 15) + "-" + str(
+                                                   high) + "/#" + str(chat_id)))
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown', callback_data=url_main + "@ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "@ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         else:
@@ -441,20 +461,22 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                 if (i % 4 == 0):
                     temp.append(InlineKeyboardButton(text=str(slow) + "-" + str(shigh), parse_mode='Markdown',
                                                      callback_data=url_main + "@" + str(slow) + "-" + str(
-                                                         shigh) + "/#"+ str(chat_id)))
+                                                         shigh) + "/#" + str(chat_id)))
                     inl.append(temp)
                     temp = []
                 else:
                     temp.append(InlineKeyboardButton(text=str(slow) + "-" + str(shigh), parse_mode='Markdown',
-                                                     callback_data=url_main+ "@" + str(slow) + "-" + str(
-                                                         shigh) + "/#"+ str(chat_id)))
+                                                     callback_data=url_main + "@" + str(slow) + "-" + str(
+                                                         shigh) + "/#" + str(chat_id)))
                     if (i == 15):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text=str(low + rem * 15) + "-" + str(high), parse_mode='Markdown',
                                                callback_data=url_main
-                                                             + "@" + str(low + rem * 15) + "-" + str(high) + "/#"+ str(chat_id)))
+                                                             + "@" + str(low + rem * 15) + "-" + str(high) + "/#" + str(
+                                                   chat_id)))
             inl.append(
-                [InlineKeyboardButton(text="Back", parse_mode='Markdown', callback_data=url_main + "@ep#" + str(chat_id))])
+                [InlineKeyboardButton(text="Back", parse_mode='Markdown',
+                                      callback_data=url_main + "@ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
@@ -485,14 +507,14 @@ def on_callback_query(msg):
                 episode_matrix(url, chat_id, ide, "@")
         elif (query_data[hash_position - 1] == "/"):
             s = query_data[:hash_position - 1]
-            m=s
+            m = s
             low = high = pos = 0
             q = ""
-            for i in range(-2, -10, -1):
+            for i in range(-2, -13, -1):
                 if (s[i] == "@" or s[i] == "%"):
                     pos = i
                     typ = s[i]
-            s = s[pos+1:]
+            s = s[pos + 1:]
             for i in s:
                 if (i == "-"):
                     low = int(q)
@@ -503,35 +525,37 @@ def on_callback_query(msg):
             range_expand(m[:pos], low, high, typ, chat_id, ide)
 
         elif (query_data[hash_position - 1] == "*"):
-            s = query_data[:hash_position-1]
-            num=""
-            for i in range(-1,-5,-1):
-                if(s[i]=="*"):
+            s = query_data[:hash_position - 1]
+            num = ""
+            for i in range(-1, -5, -1):
+                if (s[i] == "*"):
                     pos = i
                     break
                 else:
-                    num+=s[i]
+                    num += s[i]
             num = int(num[::-1])
             result = search(s[:pos])
-            res =""
-            if(20*num >=len(result)):
+            res = ""
+            if (20 * num >= len(result)):
                 end = len(result)
             else:
-                end = 20*num
-            for i in range(20*(num-1),end):
-                res+=result[i]
+                end = 20 * num
+            for i in range(20 * (num - 1), end):
+                res += result[i]
             bot.editMessageText((group_id, msg['message']['message_id']), res)
-            inl=[]
-            if(num==1):
-                inl.append(InlineKeyboardButton(text = "N/A", parse_mode='Markdown', callback_data = "hshsh"))
-                inl.append(InlineKeyboardButton(text = str(num) , parse_mode='Markdown', callback_data = "jsjhs"))
+            inl = []
+            if (num == 1):
+                inl.append(InlineKeyboardButton(text="N/A", parse_mode='Markdown', callback_data="hshsh"))
+                inl.append(InlineKeyboardButton(text=str(num), parse_mode='Markdown', callback_data="jsjhs"))
             else:
-                inl.append(InlineKeyboardButton(text = "<< " + str(num-1), parse_mode='Markdown', callback_data = s[:pos] + "*" +str(num-1) +"*#" +str(chat_id)))
-                inl.append(InlineKeyboardButton(text = str(num) , parse_mode='Markdown', callback_data = "jsjhs"))
-            if(end == len(result)):
-                inl.append(InlineKeyboardButton(text = "end", parse_mode='Markdown', callback_data = "dhddh"))
+                inl.append(InlineKeyboardButton(text="<< " + str(num - 1), parse_mode='Markdown',
+                                                callback_data=s[:pos] + "*" + str(num - 1) + "*#" + str(chat_id)))
+                inl.append(InlineKeyboardButton(text=str(num), parse_mode='Markdown', callback_data="jsjhs"))
+            if (end == len(result)):
+                inl.append(InlineKeyboardButton(text="end", parse_mode='Markdown', callback_data="dhddh"))
             else:
-                inl.append(InlineKeyboardButton(text = str(num+1) + " >>", parse_mode='Markdown', callback_data = s[:pos] + "*" +str(num+1) +"*#" +str(chat_id)))
+                inl.append(InlineKeyboardButton(text=str(num + 1) + " >>", parse_mode='Markdown',
+                                                callback_data=s[:pos] + "*" + str(num + 1) + "*#" + str(chat_id)))
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=[inl]))
 
         elif (query_data[hash_position - 2:hash_position] == "li"):
@@ -539,14 +563,14 @@ def on_callback_query(msg):
                 url = query_data[:hash_position - 3]
                 url_gogo = q.bitly.expand(url)
                 m = url_gogo.find("episode")
-                back_url = "https://gogoanime.so/category/" + url_gogo[21:m-1]
+                back_url = "https://gogoanime.so/category/" + url_gogo[21:m - 1]
                 back_url = q.bitly.short(back_url)
-                num=""
-                for i in range(-1,-6,-1):
-                    if(url_gogo[i]=="-"):
+                num = ""
+                for i in range(-1, -6, -1):
+                    if (url_gogo[i] == "-"):
                         break
                     else:
-                        num+=url_gogo[i]
+                        num += url_gogo[i]
                 num = num[::-1]
                 inl = []
                 login = {'_csrf': 0,
@@ -575,15 +599,15 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
             else:
-                s = query_data[:hash_position-2]
-                num =""
+                s = query_data[:hash_position - 2]
+                num = ""
                 pos = 0
-                for i in range(-1,-6,-1):
-                    if(s[i]=="@"):
-                        pos=i
+                for i in range(-1, -6, -1):
+                    if (s[i] == "@"):
+                        pos = i
                         break
                     else:
-                        num+=s[i]
+                        num += s[i]
                 num = num[::-1]
                 url = "https://gogoanime.so/" + s[:pos] + "-episode-" + str(num)
                 back_url = s[:pos]
@@ -614,7 +638,7 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
-TOKEN = "1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk"
+TOKEN = '1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk'
 
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
