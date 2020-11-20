@@ -1,4 +1,5 @@
 import re
+import sys
 import time
 import telepot
 import requests
@@ -63,9 +64,8 @@ def on_chat_message(msg):
 
         elif msg['text'][:11] == "/watchorder":
             if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
-                                                           and (msg['text'][-13:] == '@Any_Animebot')) or msg[
-                                                                                                              'text'].lower()[
-                                                                                                          :24] == "/watchorder@Any_Animebot"):
+                                                        and (msg['text'][-13:] == '@Any_Animebot')) or msg[
+                                                        'text'].lower()[:24] == "/watchorder@Any_Animebot"):
                 bot.sendDocument(group_id, "https://i.imgur.com/CsZZEDE.gif",
                                  caption="/watchorder <𝔰𝔥𝔬𝔯𝔱 𝔫𝔞𝔪𝔢>")
             else:
@@ -179,7 +179,10 @@ def about(url, chat_id, group_id, typ):
     abo.append("Episodes: " + str(so.find('a', class_='active').getText()))
     for i in range(len(abo)):
         s = s + abo[i] + '\n' + '\n'
-    bot.sendPhoto(group_id, img)
+    try:
+        bot.sendPhoto(group_id, img)
+    except Exception as e:
+        print("Oops!", e.__class__, "occurred.")
     bot.sendMessage(group_id, s)
     inl = []
     if (typ == "%"):
@@ -638,7 +641,7 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 
-TOKEN = '1382346231:AAFovu38e6OnV0qRqAg7wMmgmw9MZ6ImVUk'
+TOKEN = '1324074534:AAH2WfmQT0M-Iv_H46iO0fz6qVStuvqeLY4'
 
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
