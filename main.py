@@ -81,10 +81,13 @@ def on_chat_message(msg):
                 guesser(chat_id)
 
         elif (msg['text'][:4] == '/owo'):
-            if (msg['text'][4] == "@"):
-                s = msg['text'][17:]
+            if(len(msg['text'])>4):
+                if (msg['text'][4] == "@"):
+                    s = msg['text'][17:]
+                else:
+                    s = msg['text'][4:]
             else:
-                s = msg['text'][4:]
+                s=""
             now = dt.now()
             now = now.strftime("%H:%M:%S")
             if (check(chat_id) == True) and (ttime(now, chat_id) == True):
