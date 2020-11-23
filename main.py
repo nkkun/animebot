@@ -1,30 +1,107 @@
 import re
-import sys
 import time
 import telepot
+import random
 import requests
 import pyshorteners
+from datetime import datetime as dt
 from index1 import search
 from watchorder import watchsearch
+from list_manager import adder, list_search, purge, check, ret
+from timer import time_purge, save, ttime, tcheck
 from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 
+def guesser(chat_id):
+    url = "https://www.randomanime.org/sitemap.xml"
+    req = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    so = soup(req.content, "html.parser")
+    links = so.find_all("loc")
+    links_filtered = []
+    for i in range(len(links)):
+        links[i] = links[i].getText()
+        if links[i].find("/anime/") != -1:
+            links_filtered.append(links[i])
+    choose_url = random.choice(links_filtered)
+    name = choose_url[34:len(choose_url) - 1]
+    name = re.sub(r"-", " ", name)
+    req = requests.get(choose_url, headers={'User-Agent': 'Mozilla/5.0'})
+    so = soup(req.content, "html.parser")
+    image = so.find("picture")
+    image = image.find("img")
+    image = image.attrs["src"][2:]
+    bot.sendPhoto(chat_id, image, caption="OwO, Guess this anime. Type /owo and name to guess")
+    now = dt.now()
+    now = now.strftime("%H:%M:%S")
+    save(chat_id, now)
+    adder(chat_id, name)
+
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     q = pyshorteners.Shortener(api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b")
-    if content_type == 'text' and 'reply_to_message' in msg.keys():
-        if (("#request" in msg['text'].lower()) and str(msg['reply_to_message']['chat']['id']) == "-1001308073740"):
-            reply = msg['reply_to_message']
-            from_id = reply['from']['id']
-            name = reply['from']['first_name']
-            if 'username' in reply['from'].keys():
-                name = name + " @" + reply['from']['username']
-            query = reply['text']
-            request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
-            bot.sendMessage("-1001308073740", "Submitted your desires to admins "  + reply['from']['first_name'] + " kun!!")
-            bot.sendMessage("-1001467729523", request_total)
+    if (content_type == 'text') and ("#request" in msg['text'].lower()):
+        if ('reply_to_message' in msg.keys()):
+            if str(msg['reply_to_message']['chat']['id']) == "-1001308073740":
+                reply = msg['reply_to_message']
+                from_id = reply['from']['id']
+                name = reply['from']['first_name']
+                if 'username' in reply['from'].keys():
+                    name = name + " @" + reply['from']['username']
+                query = reply['text']
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
+                bot.sendMessage("-1001308073740", "Submitted your desires to admins "  + name + " kun!!",
+                                reply_to_message_id=msg['message_id'])
+                bot.sendMessage("-1001467729523", request_total)
+        else:
+            if(str(chat_id) == "-1001308073740"):
+                from_id = msg['message']['from']['id']
+                name = msg['message']['from']['first_name']
+                if 'username' in msg['message']['from'].keys():
+                    name = name + " @" + msg['message']['from']['username']
+                query = msg['text']
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
+                bot.sendMessage("-1001308073740",
+                                "Submitted your desires to admins " + name + " kun!!",
+                                reply_to_message_id=msg['message_id'])
+                bot.sendMessage("-1001467729523", request_total)
+    if content_type == 'text':
+        if msg['text'][:6] == '/guess':
+            if (tcheck(chat_id) == True):
+                now = dt.now()
+                now = now.strftime("%H:%M:%S")
+                if (ttime(str(now), chat_id) == True):
+                    bot.sendMessage(chat_id, "Already Guessing!!!", reply_to_message_id=msg['message_id'])
+                else:
+                    bot.sendMessage(chat_id, "last one was '" + str(check(chat_id)) + "' nobody guessed correctly."
+                                    + " Sending a new one now!!")
+                    guesser(chat_id)
+            else:
+                guesser(chat_id)
+
+        elif (msg['text'][:4] == '/owo'):
+            if (msg['text'][4] == "@"):
+                s = msg['text'][17:]
+            else:
+                s = msg['text'][4:]
+            now = dt.now()
+            now = now.strftime("%H:%M:%S")
+            if (check(chat_id) == True) and (ttime(now, chat_id) == True):
+                if list_search(s, chat_id):
+                    bot.sendMessage(chat_id, "OwO you got that right!!! \nAnime was " + str(ret(chat_id)),
+                                    reply_to_message_id=msg['message_id'])
+                    purge(chat_id)
+                    time_purge(chat_id)
+                else:
+                    bot.sendMessage(chat_id, "That's not right!!!", reply_to_message_id=msg['message_id'])
+            elif (check(chat_id) == True) and (ttime(now, chat_id) == False):
+                bot.sendMessage(chat_id, "Oops you ran out of time... \n Type /guess to play again...",
+                                reply_to_message_id=msg['message_id'])
+                purge(chat_id)
+                time_purge(chat_id)
+            else:
+                bot.sendMessage(chat_id, "Not guessing anything right now \n Type /guess to play again...")
     group_id = chat_id
     chat_id = msg['from']['id']
     if content_type == 'text':
