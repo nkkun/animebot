@@ -50,7 +50,7 @@ def on_chat_message(msg):
                 if 'username' in reply['from'].keys():
                     name = name + " @" + reply['from']['username']
                 query = reply['text']
-                url = "https://t.me/c/1001308073740/" + str(reply['message_id'])
+                url = "https://t.me/Anime_Chat_Guild/" + str(reply['message_id'])
                 request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
                 bot.sendMessage("-1001308073740", "Submitted your desires to admins "  + name + " kun!!",
                                 reply_to_message_id=msg['message_id'])
@@ -62,7 +62,7 @@ def on_chat_message(msg):
                 if 'username' in msg['from'].keys():
                     name = name + " @" + msg['from']['username']
                 query = msg['text']
-                url = "https://t.me/c/1001308073740/" + str(msg['message_id'])
+                url = "https://t.me/Anime_Chat_Guild/" + str(msg['message_id'])
                 request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
                 bot.sendMessage("-1001308073740",
                                 "Submitted your desires to admins " + name + " kun!!",
