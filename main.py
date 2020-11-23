@@ -32,7 +32,7 @@ def guesser(chat_id):
     image = so.find("picture")
     image = image.find("img")
     image = image.attrs["src"][2:]
-    bot.sendPhoto(chat_id, image, caption="OwO, Guess this anime. Type /owo and name to guess")
+    bot.sendPhoto(chat_id, image, caption="OwO, Guess this anime within 2 minutes. Type /owo and name to guess")
     now = dt.now()
     now = now.strftime("%H:%M:%S")
     save(chat_id, now)
@@ -50,18 +50,20 @@ def on_chat_message(msg):
                 if 'username' in reply['from'].keys():
                     name = name + " @" + reply['from']['username']
                 query = reply['text']
-                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
+                url = "https://t.me/c/" + str(from_id) + "/" + str(reply['message_id'])
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
                 bot.sendMessage("-1001308073740", "Submitted your desires to admins "  + name + " kun!!",
                                 reply_to_message_id=msg['message_id'])
                 bot.sendMessage("-1001467729523", request_total)
         else:
             if(str(chat_id) == "-1001308073740"):
-                from_id = msg['message']['from']['id']
-                name = msg['message']['from']['first_name']
-                if 'username' in msg['message']['from'].keys():
-                    name = name + " @" + msg['message']['from']['username']
+                from_id = msg['from']['id']
+                name = msg['from']['first_name']
+                if 'username' in msg['from'].keys():
+                    name = name + " @" + msg['from']['username']
                 query = msg['text']
-                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query
+                url = "https://t.me/c/" + str(from_id) + "/" + str(msg['message_id'])
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
                 bot.sendMessage("-1001308073740",
                                 "Submitted your desires to admins " + name + " kun!!",
                                 reply_to_message_id=msg['message_id'])
