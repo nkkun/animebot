@@ -1,15 +1,17 @@
+import re
 lst={}
 def adder(chat_id, name):
     lst[chat_id] = name
-    print(lst[chat_id])
 def list_search(x, chat_id):
     if(x == ""):
         return False
     else:
+        x = re.sub(r'[^\w]', ' ', x)
         x = x.strip().split()
         flag = 0
         for i in x:
-            if i in lst[chat_id].split():
+            m = re.sub(r'[^\w]', ' ', lst[chat_id].lower())
+            if i in m.split():
                 flag = 0
             else:
                 flag = 1

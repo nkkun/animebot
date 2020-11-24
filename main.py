@@ -25,14 +25,15 @@ def guesser(chat_id):
         if links[i].find("/anime/") != -1:
             links_filtered.append(links[i])
     choose_url = random.choice(links_filtered)
-    name = choose_url[34:len(choose_url) - 1]
-    name = re.sub(r"-", " ", name)
     req = requests.get(choose_url, headers={'User-Agent': 'Mozilla/5.0'})
     so = soup(req.content, "html.parser")
     image = so.find("picture")
     image = image.find("img")
     image = image.attrs["src"][2:]
-    bot.sendPhoto(chat_id, image, caption="OwO, Guess this anime within 2 minutes. Type /owo and name to guess")
+    name = so.find("span", class_ = 'fluid-top-header').getText()
+    name = name +" (" +  so.find("span", class_ = 'fluid-sub-header').getText() + ")"
+    print(name)
+    bot.sendPhoto(chat_id, image, caption="OwO, Guess this anime within 2 minutes. Type /uwu and name to guess")
     now = dt.now()
     now = now.strftime("%H:%M:%S")
     save(chat_id, now)
@@ -76,25 +77,25 @@ def on_chat_message(msg):
                 if (ttime(str(now), chat_id) == True):
                     bot.sendMessage(chat_id, "Already Guessing!!!", reply_to_message_id=msg['message_id'])
                 else:
-                    bot.sendMessage(chat_id, "last one was '" + str(check(chat_id)) + "' nobody guessed correctly."
+                    bot.sendMessage(chat_id, "last one was '" + str(ret(chat_id)) + "' nobody guessed correctly."
                                     + " Sending a new one now!!")
                     guesser(chat_id)
             else:
                 guesser(chat_id)
 
-        elif (msg['text'][:4] == '/owo'):
+        elif (msg['text'][:4] == '/uwu'):
             if(len(msg['text'])>4):
                 if (msg['text'][4] == "@"):
-                    s = msg['text'][17:]
+                    s = msg['text'][17:].lower()
                 else:
-                    s = msg['text'][4:]
+                    s = msg['text'][4:].lower()
             else:
                 s=""
             now = dt.now()
             now = now.strftime("%H:%M:%S")
             if (check(chat_id) == True) and (ttime(now, chat_id) == True):
                 if list_search(s, chat_id):
-                    bot.sendMessage(chat_id, "OwO you got that right!!! \nAnime was " + str(ret(chat_id)),
+                    bot.sendMessage(chat_id, "UwU you got that right!!! \nAnime was " + str(ret(chat_id)),
                                     reply_to_message_id=msg['message_id'])
                     purge(chat_id)
                     time_purge(chat_id)
