@@ -13,7 +13,7 @@ def save(chat_id, t):
 def ttime(t,chat_id):
     FMT = '%H:%M:%S'
     tdelta = datetime.strptime(t, FMT) - datetime.strptime(time_check[chat_id], FMT)
-    if(tdelta.total_seconds()<=120):
+    if(abs(tdelta.total_seconds())<=120):
         return True
     else:
         return False
