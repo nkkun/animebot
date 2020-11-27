@@ -230,7 +230,8 @@ def on_chat_message(msg):
 
         elif msg['text'][:5] == '/help':
             bot.sendMessage(group_id,
-                            "Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n \nif something doesn't work contact @Ransom_s")
+                            "Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n /guess" +
+                            " to play anime guessing game \n /watchorder + anime name to get the correct watchorder \n \nif something doesn't work contact @Ransom_s")
 
 
 def check_chat_id(poster, clicker):

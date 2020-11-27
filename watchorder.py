@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup as soup
 
 def watchsearch(st):
@@ -15,6 +16,9 @@ def watchsearch(st):
     ret = {}
     keys = list(index.keys())
     for i in range(len(keys)):
-        if st.lower() in keys[i].lower():
+        ch = re.sub("\W+","",keys[i])
+        st = re.sub("\W+","",st)
+        if st.lower() in ch.lower():
             ret[keys[i]] = index[keys[i]]
     return ret
+print(watchsearch("shimoneta"))
