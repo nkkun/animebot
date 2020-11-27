@@ -21,4 +21,3 @@ def watchsearch(st):
         if st.lower() in ch.lower():
             ret[keys[i]] = index[keys[i]]
     return ret
-print(watchsearch("shimoneta"))
