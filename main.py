@@ -117,9 +117,7 @@ def on_chat_message(msg):
     group_id = chat_id
     chat_id = msg['from']['id']
     if content_type == 'text':
-        if (msg['text'].find("#") != -1):
-            bot.sendMessage(group_id, "# in query is forbidden")
-        elif msg['text'][:7] == '/search':
+        if msg['text'][:7] == '/search':
             if ((msg['text'].lower() == '/search') or ((msg['text'].lower()[:7] == '/search')
                                                        and (msg['text'][-13:] == '@Any_Animebot'))):
                 bot.sendDocument(group_id, "https://i.imgur.com/BhiVTHg.gif", caption="/search     <αηιмє ηαмє>")
@@ -128,31 +126,34 @@ def on_chat_message(msg):
                     s = msg['text'][20:]
                 else:
                     s = msg['text'][8:]
-                s = re.sub('\W+', ' ', s)
-                surl2 = 'https://gogoanime.so//search.html?keyword=' + str("%20".join(s.lower().split()))
-                r = requests.get(surl2, headers={'User-Agent': 'Mozilla/5.0'})
-                page_soup = soup(r.content, "html.parser")
-                title = page_soup.find_all('p', class_='name')
-                for i in range(len(title)):
-                    title[i] = title[i].find('a')
-                inl = []
-                for tit in title:
-                    name = tit.attrs['title']
-                    lob = tit.attrs['href']
-                    if (len(lob[10:]) > 40):
-                        link = q.chilpit.short('https://gogoanime.so' + lob)
-                        inl.append(
-                            [InlineKeyboardButton(text=str(name[:20]) + "...." + str(name[-23:]), parse_mode='Markdown',
-                                                  callback_data=link + "%ab#" + str(chat_id))])
-                    else:
-                        inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
-                                                         callback_data=str(lob)[10:] + "@ab#" + str(chat_id))])
-                if 'username' in msg['from']:
-                    bot.sendMessage('1152801694',
-                                    msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
+                if (s.find("#") != -1):
+                    bot.sendMessage(group_id, "# in query is forbidden")
                 else:
-                    bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
-                bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
+                    s = re.sub('\W+', ' ', s)
+                    surl2 = 'https://gogoanime.so//search.html?keyword=' + str("%20".join(s.lower().split()))
+                    r = requests.get(surl2, headers={'User-Agent': 'Mozilla/5.0'})
+                    page_soup = soup(r.content, "html.parser")
+                    title = page_soup.find_all('p', class_='name')
+                    for i in range(len(title)):
+                        title[i] = title[i].find('a')
+                    inl = []
+                    for tit in title:
+                        name = tit.attrs['title']
+                        lob = tit.attrs['href']
+                        if (len(lob[10:]) > 40):
+                            link = q.chilpit.short('https://gogoanime.so' + lob)
+                            inl.append(
+                                [InlineKeyboardButton(text=str(name[:20]) + "...." + str(name[-23:]), parse_mode='Markdown',
+                                                      callback_data=link + "%ab#" + str(chat_id))])
+                        else:
+                            inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
+                                                             callback_data=str(lob)[10:] + "@ab#" + str(chat_id))])
+                    if 'username' in msg['from']:
+                        bot.sendMessage('1152801694',
+                                        msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
+                    else:
+                        bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
+                    bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         elif msg['text'][:11] == "/watchorder":
             if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
@@ -186,27 +187,30 @@ def on_chat_message(msg):
                     s = msg['text'][19:].strip()
                 else:
                     s = msg['text'][6:].strip()
-                result = search(s)
-                if (len(result) == 0):
-                    bot.sendMessage(group_id, "OwO nothing with that keyword")
+                if (s.find("#") != -1):
+                    bot.sendMessage(group_id, "# in query is forbidden")
                 else:
-                    count = len(result)
-                    if (count <= 20):
-                        res = ""
-                        for i in result:
-                            res += i
-                        bot.sendMessage(group_id, res)
+                    result = search(s)
+                    if (len(result) == 0):
+                        bot.sendMessage(group_id, "OwO nothing with that keyword")
                     else:
-                        res = ""
-                        for i in range(20):
-                            res += result[i]
-                        inl = []
-                        inl.append(InlineKeyboardButton(text="N/A", parse_mode='Markdown', callback_data="hshsh"))
-                        inl.append(InlineKeyboardButton(text="1", parse_mode='Markdown', callback_data="jsjhs"))
-                        inl.append(InlineKeyboardButton(text=">>", parse_mode='Markdown',
-                                                        callback_data=s + "*2*#" + str(chat_id)))
-                        bot.sendMessage(group_id, res + "\n \n Query:" + s + ", Use the slider to jump pages ",
-                                        reply_markup=InlineKeyboardMarkup(inline_keyboard=[inl]))
+                        count = len(result)
+                        if (count <= 20):
+                            res = ""
+                            for i in result:
+                                res += i
+                            bot.sendMessage(group_id, res)
+                        else:
+                            res = ""
+                            for i in range(20):
+                                res += result[i]
+                            inl = []
+                            inl.append(InlineKeyboardButton(text="N/A", parse_mode='Markdown', callback_data="hshsh"))
+                            inl.append(InlineKeyboardButton(text="1", parse_mode='Markdown', callback_data="jsjhs"))
+                            inl.append(InlineKeyboardButton(text=">>", parse_mode='Markdown',
+                                                            callback_data=s + "*2*#" + str(chat_id)))
+                            bot.sendMessage(group_id, res + "\n \n Query:" + s + ", Use the slider to jump pages ",
+                                            reply_markup=InlineKeyboardMarkup(inline_keyboard=[inl]))
 
         elif msg['text'][:8] == '/updates':
             surl4 = 'https://gogoanime.so/'
@@ -724,7 +728,6 @@ def on_callback_query(msg):
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
 TOKEN = os.environ.get("bot_api")
-
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
                   'callback_query': on_callback_query}).run_as_thread()
