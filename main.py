@@ -160,7 +160,7 @@ def on_chat_message(msg):
                     bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
         elif msg['text'] == "/hentai" or msg['text'] == '/hentai@Any_Animebot':
-            if msg['chat']['type'] == "group":
+            if msg['chat']['type'] == "group" or msg['chat']['type'] == "supergroup":
                 bot.sendMessage(group_id,
                                 "This is a public place. Oni Chan!! \nSend me a personal message to get some...",
                                 reply_to_message_id=msg['message_id'])
@@ -179,7 +179,7 @@ def on_chat_message(msg):
                                 msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
             else:
                 bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
-            if msg['chat']['type'] == "group":
+            if msg['chat']['type'] == "group" or msg['chat']['type'] == "supergroup":
                 bot.sendMessage(group_id,
                                 "This is a public place. Oni Chan!! \nSend me a personal message to get some...",
                                 reply_to_message_id=msg['message_id'])
