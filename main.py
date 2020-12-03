@@ -10,6 +10,7 @@ from index1 import search
 from watchorder import watchsearch
 from list_manager import adder, list_search, purge, check, ret
 from timer import time_purge, save, ttime, tcheck
+from hentai import hen_rand, hen_links, hen_back, hen_back1, hen_search, hen_about, hen_about1
 from bs4 import BeautifulSoup as soup
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -17,6 +18,8 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 # api_key="0043dd9b0dbb97eca53e2fc23b84cfd8a493816b"
 
 q = pyshorteners.Shortener()
+
+
 def guesser(chat_id):
     url = "https://www.randomanime.org/sitemap.xml"
     req = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -47,7 +50,7 @@ def on_chat_message(msg):
     try:
         content_type, chat_type, chat_id = telepot.glance(msg)
     except Exception as e:
-        return ("Oops!", e.__class__, "occurred.")
+        return "Oops!", e.__class__, "occurred."
     if (content_type == 'text') and ("#request" in msg['text'].lower()):
         if 'reply_to_message' in msg.keys():
             if str(msg['reply_to_message']['chat']['id']) == "-1001308073740":
@@ -143,7 +146,8 @@ def on_chat_message(msg):
                         if (len(lob[10:]) > 40):
                             link = q.chilpit.short('https://gogoanime.so' + lob)
                             inl.append(
-                                [InlineKeyboardButton(text=str(name[:20]) + "...." + str(name[-23:]), parse_mode='Markdown',
+                                [InlineKeyboardButton(text=str(name[:20]) + "...." + str(name[-23:]),
+                                                      parse_mode='Markdown',
                                                       callback_data=link + "%ab#" + str(chat_id))])
                         else:
                             inl.append([InlineKeyboardButton(text=str(name), parse_mode='Markdown',
@@ -154,6 +158,35 @@ def on_chat_message(msg):
                     else:
                         bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
                     bot.sendMessage(group_id, "RESULTS", reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
+
+        elif msg['text'] == "/hentai" or msg['text'] == '/hentai@Any_Animebot':
+            if msg['chat']['type'] == "group":
+                bot.sendMessage(group_id,
+                                "This is a public place. Oni Chan!! \nSend me a personal message to get some...",
+                                reply_to_message_id=msg['message_id'])
+            else:
+                hen_rand(group_id, msg, ide=0)
+            if 'username' in msg['from']:
+                bot.sendMessage('1152801694',
+                                msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
+            else:
+                bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
+
+        elif msg['text'][:7] == "/hentai" and len(msg['text']) >= 9:
+            st = msg['text'][7:].strip()
+            if 'username' in msg['from']:
+                bot.sendMessage('1152801694',
+                                msg['text'] + " " + msg['from']['first_name'] + " @" + msg['from']['username'])
+            else:
+                bot.sendMessage('1152801694', msg['text'] + " " + msg['from']['first_name'])
+            if msg['chat']['type'] == "group":
+                bot.sendMessage(group_id,
+                                "This is a public place. Oni Chan!! \nSend me a personal message to get some...",
+                                reply_to_message_id=msg['message_id'])
+            elif len(st) < 3:
+                bot.sendMessage(group_id, "Query too short in length!!")
+            else:
+                hen_search(group_id, st)
 
         elif msg['text'][:11] == "/watchorder":
             if ((msg['text'].lower() == '/watchorder') or ((msg['text'].lower()[:11] == '/watchorder')
@@ -568,7 +601,8 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                         inl.append(temp)
             inl[3].append(InlineKeyboardButton(text=str(low + rem * 15) + "-" + str(high), parse_mode='Markdown',
                                                callback_data=url_main
-                                                + "@" + str(low + rem * 15) + "-" + str(high) + "/#" + str(chat_id)))
+                                                             + "@" + str(low + rem * 15) + "-" + str(high) + "/#" + str(
+                                                   chat_id)))
             inl.append(
                 [InlineKeyboardButton(text="Back", parse_mode='Markdown',
                                       callback_data=url_main + "@ep#" + str(chat_id))])
@@ -581,7 +615,33 @@ def on_callback_query(msg):
     group_id = msg['message']['chat']['id']
     ide = (group_id, msg['message']['message_id'])
     hash_position = query_data.find("#")
-    if (check_chat_id(query_data[hash_position + 1:], str(chat_id)) == False):
+    if query_data == "random":
+        hen_rand(group_id, msg, ide)
+    elif query_data[-5:] == "~link":
+        hen_links(query_data[:-5], ide)
+    elif query_data[-5:] == "~back":
+        try:
+            hen_back(query_data[:-5], ide)
+        except Exception as e:
+            bot.answerCallbackQuery(query_id, text="Error Occured, Try again!!", show_alert=True)
+    elif query_data[-6:] == "~about":
+        bot.editMessageReplyMarkup(ide, reply_markup=None)
+        url = query_data[:-6]
+        if url.find("chilp") != -1:
+            url = q.chilpit.expand(url)
+        pos = url.find(".com")
+        name = re.sub("-", " ", url[pos+5:len(url)-1])
+        print(name)
+        try:
+            hen_about(name, url, group_id, 0, msg)
+        except Exception as e:
+            try:
+                hen_about1(name, url, group_id, 0, msg)
+            except Exception as j:
+                bot.answerCallbackQuery(query_id, text="Error Occured try again", show_alert=True)
+
+
+    elif (check_chat_id(query_data[hash_position + 1:], str(chat_id)) == False):
         bot.answerCallbackQuery(query_id, text="Not your query!!", show_alert=True)
     else:
         if (query_data[hash_position - 2:hash_position] == "ab"):
@@ -726,6 +786,7 @@ def on_callback_query(msg):
                     inl.append([InlineKeyboardButton(text="Back", parse_mode='Markdown',
                                                      callback_data=back_url + "@ep#" + str(chat_id))])
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
+
 
 TOKEN = os.environ.get("bot_api")
 bot = telepot.Bot(TOKEN)
