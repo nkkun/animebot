@@ -103,7 +103,9 @@ def on_chat_message(msg):
             now = dt.now()
             now = now.strftime("%H:%M:%S")
             if (check(chat_id) == True) and (ttime(now, chat_id) == True):
-                if list_search(s, chat_id):
+                if(s in ["no", "of", "the"]):
+                    bot.sendMessage(chat_id, "small pp and small guesses are not allowed!!!", reply_to_message_id=msg['message_id'])
+                elif list_search(s, chat_id):
                     bot.sendMessage(chat_id, "UwU you got that right!!! \nAnime was " + str(ret(chat_id)),
                                     reply_to_message_id=msg['message_id'])
                     purge(chat_id)
