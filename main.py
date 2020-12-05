@@ -277,7 +277,7 @@ def on_chat_message(msg):
 
         elif msg['text'][:5] == '/help':
             bot.sendMessage(group_id,
-                            "Commands: \n /search + plus the name of the anime \n /index + beginning word \n /updates for latest updates in anime \n /guess" +
+                            "Commands: \n /search + plus the name of the anime \n /hentai in pm only \n /index + beginning word \n /updates for latest updates in anime \n /guess" +
                             " to play anime guessing game \n /watchorder + anime name to get the correct watchorder \n \nif something doesn't work contact @Ransom_s")
 
 
@@ -608,6 +608,16 @@ def range_expand(url_main, low, high, typ, chat_id, ide):
                                       callback_data=url_main + "@ep#" + str(chat_id))])
             bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
+def in_download(url):
+    req = requests.get(url, headers = {"User-Agent" : "Mozilla/5.0"})
+    so = soup(req.content, "html.parser")
+    link = so.find("div", class_="dowload")
+    text = link.find("a").getText()
+    link = link.find("a").attrs['href']
+    text = re.sub(" ", "", text)
+    r = {}
+    r[text] = link
+    return r
 
 def on_callback_query(msg):
     q = pyshorteners.Shortener()
@@ -746,6 +756,12 @@ def on_callback_query(msg):
                             tex = title[i].getText()
                             title[i] = title[i].attrs['href']
                             inl.append([InlineKeyboardButton(text="Ep " + num + " " + tex, url=title[i])])
+                    if len(inl) == 0:
+                        link = page_soup.find("li", class_="dowloads")
+                        link = link.find("a").attrs['href']
+                        res = in_download(link)
+                        l = list(res.keys())
+                        inl.append([InlineKeyboardButton(text="Ep " + num + " " + l[0], url=res[l[0]])])
                     inl.append([InlineKeyboardButton(text="Back", parse_mode='Markdown',
                                                      callback_data=back_url + "%ep#" + str(chat_id))])
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
@@ -762,9 +778,9 @@ def on_callback_query(msg):
                         num += s[i]
                 num = num[::-1]
                 url = "https://gogoanime.so/" + s[:pos] + "-episode-" + str(num)
-                back_url = s[:pos]
+                back_url = s[:pos]                  
                 inl = []
-                login = {'_csrf': 0, 'email': 'ransomsumit@aol.com', 'password': os.environ.get("gogo_pass")}
+                login = {'_csrf': 0, 'email': 'ransomsumit@aol.com', 'password': os.environ.get("gogo_pass") }
                 with requests.Session() as s:
                     url1 = "https://gogoanime.so/login.html"
                     r = s.get(url1, headers={'User-Agent': 'Mozilla/5.0'})
@@ -783,6 +799,12 @@ def on_callback_query(msg):
                             tex = title[i].getText()
                             title[i] = title[i].attrs['href']
                             inl.append([InlineKeyboardButton(text="Ep " + num + " " + tex, url=title[i])])
+                    if len(inl) == 0:
+                        link = page_soup.find("li", class_="dowloads")
+                        link = link.find("a").attrs['href']
+                        res = in_download(link)
+                        l = list(res.keys())
+                        inl.append([InlineKeyboardButton(text="Ep " + num + " " + l[0], url=res[l[0]])])
                     inl.append([InlineKeyboardButton(text="Back", parse_mode='Markdown',
                                                      callback_data=back_url + "@ep#" + str(chat_id))])
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
