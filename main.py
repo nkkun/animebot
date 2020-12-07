@@ -19,7 +19,31 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 q = pyshorteners.Shortener()
 
+def guesser1(chat_id):
+    pick = random.randint(1,12780)
+    req = requests.get("https://www.anime-planet.com/characters/all?page=" + str(pick), headers = {"User-Agent" : "Mozilla/5.0"})
+    so = soup(req.content, "html.parser")
+    link = so.find_all("td", class_="tableAvatar")
+    for i in range(len(link)):
+        link[i] = "https://www.anime-planet.com/" + link[i].find("a", class_ = None).attrs['href']
+    choice = random.choice(link)
+    req = requests.get(choice, headers = {"User-Agent" : "Mozilla/5.0"})
+    so = soup(req.content, "html.parser")
+    name = so.find("h1", itemprop = "name").getText()
+    if (so.find("h2", class_ = "aka")):
+        name = name + " "  + so.find("h2", class_ = "aka").getText()
+    if(so.find("img", itemprop="image").attrs['src'] == "/images/characters/blank_char.gif"):
+        guesser1(chat_id)
+    else:
+        img = "https://www.anime-planet.com/" + so.find("img", itemprop="image").attrs['src']
+        print(name)
+        bot.sendPhoto(chat_id, img, caption="OwO, Guess this character within 2 minutes. Type /uwu and name to guess")
+        now = dt.now()
+        now = now.strftime("%H:%M:%S")
+        save(chat_id, now)
+        adder(chat_id, name)
 
+    
 def guesser(chat_id):
     url = "https://www.randomanime.org/sitemap.xml"
     req = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -88,9 +112,17 @@ def on_chat_message(msg):
                 else:
                     bot.sendMessage(chat_id, "last one was '" + str(ret(chat_id)) + "' nobody guessed correctly."
                                     + " Sending a new one now!!")
-                    guesser(chat_id)
+                    ch = random.randint(1,100)
+                    if(ch%2 == 0):
+                        guesser1(chat_id)
+                    else:
+                        guesser(chat_id)
             else:
-                guesser(chat_id)
+                ch = random.randint(1,100)
+                if(ch%2 == 0):
+                    guesser1(chat_id)
+                else:
+                    guesser(chat_id)
 
         elif (msg['text'][:4] == '/uwu'):
             if (len(msg['text']) > 4):
