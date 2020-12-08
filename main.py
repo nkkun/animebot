@@ -138,7 +138,7 @@ def on_chat_message(msg):
                 if(s.strip().lower() in ["no", "of", "the"]):
                     bot.sendMessage(chat_id, "small pp and small guesses are not allowed!!!", reply_to_message_id=msg['message_id'])
                 elif list_search(s, chat_id):
-                    bot.sendMessage(chat_id, "UwU you got that right!!! \nAnime was " + str(ret(chat_id)),
+                    bot.sendMessage(chat_id, "UwU you got that right!!! \nThat was " + str(ret(chat_id)),
                                     reply_to_message_id=msg['message_id'])
                     purge(chat_id)
                     time_purge(chat_id)
