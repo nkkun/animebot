@@ -7,7 +7,7 @@ scope = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis
          "https://www.googleapis.com/auth/drive"]
 json_creds = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
 creds_dict = json.loads(json_creds)
-creds_dict['private_key'] = creds_dict['private_key'].replace("\\\\n", "\n"))
+creds_dict['private_key'] = creds_dict['private_key'].replace("\\\\n", "\n")
 creds = ServiceAccountCredentials.from_json_keyfile_name(creds_dict, scope)
 client = gspread.authorize(creds)
 
