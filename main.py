@@ -130,9 +130,9 @@ def on_chat_message(msg):
                 if(s.strip().lower() in ["no", "of", "the"]):
                     bot.sendMessage(chat_id, "small pp and small guesses are not allowed!!!", reply_to_message_id=msg['message_id'])
                 elif list_search(s, chat_id):
-                    update_score(chat_id, msg['from']['first_name'])
+                    update_score(msg['from']['id'], msg['from']['first_name'])
                     bot.sendMessage(chat_id, "UwU you got that right!!! \nThat was " + str(ret(chat_id))
-                                    + "\nYour Score: " + get_score(chat_id),
+                                    + "\nYour Score: " + get_score(msg['from']['id']),
                                     reply_to_message_id=msg['message_id'])
                     purge(chat_id)
                     time_purge(chat_id)
@@ -147,7 +147,7 @@ def on_chat_message(msg):
                 bot.sendMessage(chat_id, "Not guessing anything right now \nType /guess to play again...")
 
         elif msg['text'] == "/top" or msg['text'] == "/top@Any_Animebot":
-            bot.sendMessage(chat_id, top_leaders(str(chat_id)), reply_to_message_id=msg['message_id'])
+            bot.sendMessage(msg['from']['id'], top_leaders(str(chat_id)), reply_to_message_id=msg['message_id'])
     group_id = chat_id
     chat_id = msg['from']['id']
     if content_type == 'text':
