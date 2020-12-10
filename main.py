@@ -840,8 +840,8 @@ def on_callback_query(msg):
                                                      callback_data=back_url + "@ep#" + str(chat_id))])
                     bot.editMessageReplyMarkup(ide, reply_markup=InlineKeyboardMarkup(inline_keyboard=inl))
 
-TOKEN = "1324074534:AAH2WfmQT0M-Iv_H46iO0fz6qVStuvqeLY4"
-#TOKEN = os.environ.get("bot_api")
+
+TOKEN = os.environ.get("bot_api")
 bot = telepot.Bot(TOKEN)
 MessageLoop(bot, {'chat': on_chat_message,
                   'callback_query': on_callback_query}).run_as_thread()
