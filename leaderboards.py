@@ -31,7 +31,7 @@ def top_leaders(chat_id):
             row_no = sheet.find(i).row
             data = sheet.row_values(row_no)
             data = data[1]
-            leaders = leaders + str(count) + ". " + data + " " + str(temp[i]) + "\n"
+            leaders = leaders + str(count) + ". " + data + " --" + str(temp[i]) + "\n"
 
     if chat_id in list(temp.keys()):
         rank = leaders + "\nYour rank is: " + str(list(temp.keys()).index(chat_id) + 1) \
