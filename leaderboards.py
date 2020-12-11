@@ -45,18 +45,26 @@ def player_check(chat_id):
     try:
         row_no = sheet.find(str(chat_id), in_column=1).row
     except Exception as e:
-        row_no = False
-    return row_no
+        if(type(e).__name__ == 'CellNotFound'):
+            row_no = False
+        else:
+            row_no = "redo"
+    if row_no == "redo":
+        player_check(chat_id)
+    else:
+        return row_no
 
 
 def update_score(chat_id, name):
     check = player_check(chat_id)
     if not check:
-        sheet.append_row([chat_id, name, "1"])
-    else:
+        sheet.append_row([chat_id, name, 1])
+    elif type(check).__name__ == "int":
         cell = "C" + str(check)
         score = sheet.acell(cell, value_render_option='FORMATTED_VALUE').value
         sheet.update_acell(cell, str(int(score) + 1))
+    else:
+        update_score(chat_id, name)
 
 
 def get_score(chat_id):
@@ -67,4 +75,5 @@ def get_score(chat_id):
         cell = "C" + str(row_no)
         score = sheet.acell(cell, value_render_option='FORMATTED_VALUE').value
         return score
+
 
