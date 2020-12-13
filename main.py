@@ -81,6 +81,19 @@ def on_chat_message(msg):
                 bot.sendMessage("-1001308073740", "Submitted your desires to admins " + name + " kun!!",
                                 reply_to_message_id=msg['message_id'])
                 bot.sendMessage("-1001467729523", request_total)
+            elif str(msg['reply_to_message']['chat']['id']) == "-1001425336751":
+                reply = msg['reply_to_message']
+                from_id = reply['from']['id']
+                name = reply['from']['first_name']
+                if 'username' in reply['from'].keys():
+                    name = name + " @" + reply['from']['username']
+                query = reply['text']
+                url = "https://t.me/AnimeRyuzoku/" + str(reply['message_id'])
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
+                bot.sendMessage("-1001425336751", "Submitted your desires to admins " + name + " kun!!",
+                                reply_to_message_id=msg['message_id'])
+                bot.sendMessage("-1001185816824", request_total)
+        
         else:
             if str(chat_id) == "-1001308073740":
                 from_id = msg['from']['id']
@@ -94,6 +107,20 @@ def on_chat_message(msg):
                                 "Submitted your desires to admins " + name + " kun!!",
                                 reply_to_message_id=msg['message_id'])
                 bot.sendMessage("-1001467729523", request_total)
+                
+            elif str(chat_id) == "-1001425336751":
+                from_id = msg['from']['id']
+                name = msg['from']['first_name']
+                if 'username' in msg['from'].keys():
+                    name = name + " @" + msg['from']['username']
+                query = msg['text']
+                url = "https://t.me/AnimeRyuzoku/" + str(msg['message_id'])
+                request_total = "ID: " + str(from_id) + "\nName: " + name + "\nRequest: " + query + "\nUrl: " + url
+                bot.sendMessage("-1001425336751",
+                                "Submitted your desires to admins " + name + " kun!!",
+                                reply_to_message_id=msg['message_id'])
+                bot.sendMessage("-1001185816824", request_total)
+
     if content_type == 'text':
         if msg['text'][:6] == '/guess':
             if (tcheck(chat_id) == True):
