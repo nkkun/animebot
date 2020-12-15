@@ -14,7 +14,6 @@ client = gspread.authorize(creds)
 spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1IvaiqN7D0GJqS6t9Bhq2vScfk1phH6EHh_mrhah4rk0/edit#gid=0")
 sheet = spreadsheet.sheet1
 
-
 def top_leaders(chat_id):
     temp = {}
     data = sheet.get_all_values()
@@ -30,14 +29,14 @@ def top_leaders(chat_id):
         else:
             row_no = sheet.find(i).row
             data = sheet.row_values(row_no)
-            data = data[1]
-            leaders = leaders + str(count) + ". " + data + " --" + str(temp[i]) + "\n"
+            data = '<a href="tg://user?id='+ str(data[0]) + '">' + data[1] + "</a>"
+            leaders = leaders + str(count) + ". " + data + " -- " + str(temp[i]) + "\n"
 
     if chat_id in list(temp.keys()):
         rank = leaders + "\nYour rank is: " + str(list(temp.keys()).index(chat_id) + 1) \
                + " with score " + str(temp[chat_id])
     else:
-        rank = leaders + "\nYour Score is 0"
+        rank = "<b>" + leaders + "\nYour Score is 0" + "</b>"
     return rank
 
 

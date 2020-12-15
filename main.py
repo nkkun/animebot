@@ -174,7 +174,10 @@ def on_chat_message(msg):
                 bot.sendMessage(chat_id, "Not guessing anything right now \nType /guess to play again...")
 
         elif msg['text'] == "/top" or msg['text'] == "/top@Any_Animebot":
-            bot.sendMessage(chat_id, top_leaders(str(msg['from']['id'])), reply_to_message_id=msg['message_id'])
+            x = top_leaders(str(msg['from']['id']))
+            print(x)
+            bot.sendMessage(chat_id, x, parse_mode="HTML", reply_to_message_id=msg['message_id'])
+
     group_id = chat_id
     chat_id = msg['from']['id']
     if content_type == 'text':
