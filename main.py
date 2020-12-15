@@ -175,7 +175,6 @@ def on_chat_message(msg):
 
         elif msg['text'] == "/top" or msg['text'] == "/top@Any_Animebot":
             x = top_leaders(str(msg['from']['id']))
-            print(x)
             bot.sendMessage(chat_id, x, parse_mode="HTML", reply_to_message_id=msg['message_id'])
 
     group_id = chat_id
