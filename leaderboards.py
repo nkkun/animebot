@@ -40,17 +40,29 @@ def top_leaders(chat_id):
     return rank
 
 
+def purge_row(row_no):
+    row1 = row_no[0].row
+    cell1 = "C" + str(row1) 
+    for i in range(1,len(row_no)):
+        r = row_no[i].row
+        cell = "C" + str(r)
+        score1 = int(sheet.acell(cell1, value_render_option='FORMATTED_VALUE').value)
+        score = int(sheet.acell(cell, value_render_option='FORMATTED_VALUE').value)
+        sheet.update_acell(cell1, score1+score)
+        sheet.update_acell("A" + str(r), "")
+        sheet.update_acell("B" + str(r), "")
+        sheet.update_acell("C" + str(r), "")
+    return row1
+        
+        
 def player_check(chat_id):
-    try:
-        row_no = sheet.find(str(chat_id), in_column=1).row
-    except Exception as e:
-        if(type(e).__name__ == 'CellNotFound'):
-            row_no = False
-        else:
-            row_no = "redo"
-    if row_no == "redo":
-        player_check(chat_id)
+    row_no = sheet.findall(str(chat_id), in_column=1)
+    if(len(row_no)==0):
+        return False
+    elif(len(row_no) == 1):
+        return row_no[0]
     else:
+        row_no = purge_row(row_no)
         return row_no
 
 
