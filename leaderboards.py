@@ -14,6 +14,7 @@ client = gspread.authorize(creds)
 spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1IvaiqN7D0GJqS6t9Bhq2vScfk1phH6EHh_mrhah4rk0/edit#gid=0")
 sheet = spreadsheet.sheet1
 
+
 def top_leaders(chat_id):
     temp = {}
     data = sheet.get_all_values()
@@ -60,7 +61,7 @@ def player_check(chat_id):
     if(len(row_no)==0):
         return False
     elif(len(row_no) == 1):
-        return row_no[0]
+        return row_no[0].row
     else:
         row_no = purge_row(row_no)
         return row_no
